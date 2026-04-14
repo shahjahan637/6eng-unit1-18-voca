@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 7 Vocabulary Quiz - Proking</title>
+    <style>
+        :root {
+            --primary: #bef264; /* Lime */
+            --secondary: #65a30d;
+            --bg: #0c0a09;
+            --card: rgba(28, 25, 23, 0.8);
+            --text: #f5f5f4;
+            --accent: #facc15;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(190, 242, 100, 0.1) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(101, 163, 13, 0.1) 0, transparent 50%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Vocabulary Dashboard */
+        .study-grid {
+            background: var(--card);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(190, 242, 100, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        .study-grid h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-top: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .sentence-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .sentence-list { grid-template-columns: 1fr 1fr; }
+        }
+
+        .sentence-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .word-h { color: var(--accent); font-weight: 800; }
+
+        /* Quiz UI */
+        #quiz-box {
+            background: var(--card);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(190, 242, 100, 0.2);
+            border-radius: 24px;
+            padding: 35px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+        }
+
+        .header-meta { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: #a8a29e; }
+        .progress-container { height: 8px; background: #292524; border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
+        #p-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: 0.4s ease; }
+
+        .q-title { font-size: 22px; margin-bottom: 25px; color: #fff; }
+        .options-container { display: grid; gap: 12px; }
+
+        .btn-opt {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            border-radius: 15px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-opt:hover:not([disabled]) {
+            background: rgba(190, 242, 100, 0.15);
+            border-color: var(--primary);
+            transform: translateX(8px);
+        }
+
+        .correct { background: #65a30d !important; border-color: #bef264 !important; }
+        .wrong { background: #b91c1c !important; border-color: #ef4444 !important; }
+
+        #end-screen { text-align: center; display: none; padding: 20px 0; }
+        .final-val { font-size: 60px; font-weight: 900; color: var(--primary); margin: 20px 0; }
+        .btn-retry { background: var(--primary); color: #000; border: none; padding: 15px 40px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .btn-retry:hover { background: #fff; transform: scale(1.05); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="study-grid">
+    <h2>Lesson 7 Study Cards</h2>
+    <div class="sentence-list" id="card-list"></div>
+</div>
+
+<div id="quiz-box">
+    <div id="quiz-ui">
+        <div class="header-meta">
+            <span id="q-number">Step 1/10</span>
+            <span id="score-now">Points: 0</span>
+        </div>
+        <div class="progress-container"><div id="p-bar"></div></div>
+        
+        <div id="question-area">
+            <div class="q-title" id="q-text">Loading...</div>
+            <div class="options-container" id="opt-box"></div>
+        </div>
+    </div>
+
+    <div id="end-screen">
+        <h2 style="color: var(--primary)">Lesson 7 Complete!</h2>
+        <p>Your performance score is:</p>
+        <div class="final-val" id="total-score">0</div>
+        <p id="feedback" style="color: #a8a29e; font-style: italic; margin-bottom: 30px;"></p>
+        <button class="btn-retry" onclick="location.reload()">Restart Challenge</button>
+    </div>
+</div>
+
+<script>
+    const lessonData = [
+        "Along: We walked along the sea beach. (আমরা সমুদ্র সৈকত বরাবর হাঁটলাম।)",
+        "Circus: Children love to watch the circus. (শিশুরা সার্কাস দেখতে ভালোবাসে।)",
+        "Fail: Don't be afraid to fail, just try again. (ব্যর্থ হতে ভয় পেয়ো না, শুধু আবার চেষ্টা করো।)",
+        "Handy: This tool is very handy for repairing things. (জিনিসপত্র মেরামতের জন্য এই সরঞ্জামটি খুব সুবিধাজনক।)",
+        "Individually: The teacher spoke to each student individually. (শিক্ষক প্রত্যেক ছাত্রের সাথে আলাদাভাবে কথা বললেন।)",
+        "Recite: Can you recite a poem for us? (তুমি কি আমাদের জন্য একটি কবিতা আবৃত্তি করতে পারবে?)",
+        "Trail: The hunters followed the trail of the animal. (শিকারিরা প্রাণীটির পায়ের চিহ্ন অনুসরণ করল।)",
+        "Trunk: An elephant uses its trunk to pick up food. (হাতি তার শুঁড় ব্যবহার করে খাবার তোলে।)"
+    ];
+
+    const quizQuestions = [
+        { q: "What is the synonym of 'Fail'?", a: "Flop", o: ["Achieve", "Flop", "Succeed", "Win"] },
+        { q: "'Individually' এর বাংলা অর্থ কোনটি?", a: "পৃথকভাবে", o: ["একসাথে", "পৃথকভাবে", "সাধারণত", "দ্রুত"] },
+        { q: "What does an elephant use to pick up food?", a: "Trunk", o: ["Tail", "Trunk", "Ear", "Hoof"] },
+        { q: "Synonym of 'Handy' is:", a: "Useful", o: ["Useless", "Clumsy", "Useful", "Heavy"] },
+        { q: "Antonym of 'Individually' is:", a: "Collectively", o: ["Separately", "Singly", "Collectively", "Alone"] },
+        { q: "Which word means 'আবৃত্তি করা'?", a: "Recite", o: ["Write", "Read", "Recite", "Listen"] },
+        { q: "What is the synonym of 'Trail'?", a: "Track", o: ["Lead", "Ahead", "Track", "Stop"] },
+        { q: "Parts of speech of 'Handy' is:", a: "Adjective", o: ["Noun", "Adjective", "Verb", "Adverb"] },
+        { q: "Which tool is 'very handy for repairing'?", a: "Tool", o: ["Toy", "Tool", "Food", "Cloth"] },
+        { q: "Antonym of 'Fail' is:", a: "Succeed", o: ["Flop", "Lose", "Decline", "Succeed"] }
+    ];
+
+    const listContainer = document.getElementById('card-list');
+    lessonData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'sentence-card';
+        const parts = item.split(':');
+        div.innerHTML = `<span class="word-h">${parts[0]}:</span>${parts[1]}`;
+        listContainer.appendChild(div);
+    });
+
+    let currentQ = 0;
+    let score = 0;
+
+    function renderQuestion() {
+        const qData = quizQuestions[currentQ];
+        document.getElementById('q-text').innerText = qData.q;
+        document.getElementById('q-number').innerText = `Step ${currentQ + 1}/${quizQuestions.length}`;
+        document.getElementById('p-bar').style.width = `${((currentQ + 1) / quizQuestions.length) * 100}%`;
+        
+        const box = document.getElementById('opt-box');
+        box.innerHTML = '';
+        qData.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-opt';
+            btn.innerText = opt;
+            btn.onclick = () => checkAns(opt, btn);
+            box.appendChild(btn);
+        });
+    }
+
+    function checkAns(selected, btn) {
+        const correct = quizQuestions[currentQ].a;
+        const allBtns = document.querySelectorAll('.btn-opt');
+        allBtns.forEach(b => b.disabled = true);
+
+        if (selected === correct) {
+            score += 10;
+            btn.classList.add('correct');
+        } else {
+            score -= 2;
+            btn.classList.add('wrong');
+            allBtns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+        document.getElementById('score-now').innerText = `Points: ${score}`;
+
+        setTimeout(() => {
+            currentQ++;
+            if (currentQ < quizQuestions.length) renderQuestion();
+            else showFinal();
+        }, 1200);
+    }
+
+    function showFinal() {
+        document.getElementById('quiz-ui').style.display = 'none';
+        document.getElementById('end-screen').style.display = 'block';
+        document.getElementById('total-score').innerText = score;
+        document.getElementById('feedback').innerText = score >= 80 ? "Excellent Mastery, Proking! 🚀" : "Keep practicing to reach the top!";
+    }
+
+    renderQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 10 Vocabulary Mastery - Proking Edition</title>
+    <style>
+        :root {
+            --primary: #f59e0b;
+            --secondary: #d97706;
+            --bg: #0c0a09;
+            --surface: #1c1917;
+            --text: #fafaf9;
+            --accent: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 30px;
+        }
+
+        h1 { color: var(--primary); font-size: 2.5rem; margin: 0; text-transform: uppercase; letter-spacing: 4px; }
+        .user-tag { color: var(--secondary); font-weight: bold; margin-top: 10px; }
+
+        /* Search & Filter */
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #searchBox {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            background: var(--surface);
+            color: white;
+        }
+
+        /* Study Section */
+        .study-section {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        .data-table th { background: var(--primary); color: #000; }
+        .data-table tr:hover { background: rgba(245, 158, 11, 0.1); }
+
+        /* Quiz UI */
+        .quiz-box {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            display: none;
+            position: relative;
+        }
+
+        .meta { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; }
+        .progress-bar { height: 10px; background: #333; border-radius: 5px; margin-bottom: 30px; }
+        #progress { height: 100%; background: var(--primary); width: 0%; transition: 0.4s; }
+
+        .question { font-size: 1.4rem; margin-bottom: 25px; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .opt-btn {
+            background: #292524;
+            border: 1px solid #444;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: left;
+        }
+
+        .opt-btn:hover { background: var(--primary); color: #000; }
+        .opt-btn.correct { background: var(--accent) !important; color: white; }
+        .opt-btn.wrong { background: var(--error) !important; color: white; }
+
+        .btn-main {
+            background: var(--primary);
+            color: black;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--primary); }
+
+        #result-screen { text-align: center; display: none; }
+        .final-score { font-size: 5rem; color: var(--primary); margin: 20px 0; }
+
+        @media (max-width: 600px) {
+            .options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Lesson 10 Pro Mastery</h1>
+        <div class="user-tag">PROKING EDITION V1.0</div>
+    </header>
+
+    <div id="setup-area" style="text-align: center;">
+        <button class="btn-main" onclick="startQuiz()">Start Challenge Mode</button>
+        <p style="margin-top: 20px; color: #888;">Scroll down to Study the Vocabulary Table first.</p>
+    </div>
+
+    <div id="quiz-box" class="quiz-box">
+        <div class="meta">
+            <span id="q-count">Question: 1/20</span>
+            <span id="live-score">Score: 0</span>
+        </div>
+        <div class="progress-bar"><div id="progress"></div></div>
+        <div id="q-area">
+            <div class="question" id="q-text"></div>
+            <div class="options" id="opt-container"></div>
+        </div>
+    </div>
+
+    <div id="result-screen">
+        <h2>Challenge Finished!</h2>
+        <div class="final-score" id="final-score">0</div>
+        <p id="feedback"></p>
+        <button class="btn-main" onclick="location.reload()">Try Again</button>
+    </div>
+
+    <div class="study-section" id="study-section">
+        <h2>Vocabulary Library (42 Words)</h2>
+        <input type="text" id="searchBox" placeholder="Search words or meanings..." onkeyup="filterTable()">
+        <table class="data-table" id="vocabTable">
+            <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Pos</th>
+                    <th>Meaning</th>
+                    <th>Synonym</th>
+                    <th>Antonym</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const vocabulary = [
+        {w:"Add", p:"Verb", m:"যোগ করা", s:"join, attach", a:"subtract"},
+        {w:"Affected", p:"Adj", m:"আক্রান্ত", s:"infected", a:"unaffected"},
+        {w:"Against", p:"Prep", m:"বিরুদ্ধে", s:"opposition", a:"in favour of"},
+        {w:"Ancient", p:"Adj", m:"প্রাচীন", s:"old, antique", a:"modern"},
+        {w:"Apply", p:"Verb", m:"প্রয়োগ করা", s:"use, utilize", a:"ignore"},
+        {w:"Civilisation", p:"Noun", m:"সভ্যতা", s:"culture", a:"barbarism"},
+        {w:"Common", p:"Adj", m:"সাধারণ", s:"usual", a:"rare"},
+        {w:"Cure", p:"Verb", m:"নিরাময় করা", s:"heal, remedy", a:"harm"},
+        {w:"Decay", p:"Noun", m:"ক্ষয়", s:"rot, decline", a:"growth"},
+        {w:"Effective", p:"Adj", m:"কার্যকর", s:"useful", a:"useless"},
+        {w:"Experience", p:"Noun", m:"অভিজ্ঞতা", s:"knowledge", a:"ignorance"},
+        {w:"Grown-up", p:"Adj", m:"বয়স্ক/মুরুব্বী", s:"adult", a:"child"},
+        {w:"Heal", p:"Verb", m:"সুস্থ হওয়া", s:"recover", a:"injure"},
+        {w:"Increase", p:"Verb", m:"বৃদ্ধি করা", s:"boost", a:"decrease"},
+        {w:"Injury", p:"Noun", m:"আঘাত", s:"wound", a:"cure"},
+        {w:"Minor", p:"Adj", m:"ছোট/সামান্য", s:"slight", a:"major"},
+        {w:"Natural", p:"Adj", m:"প্রাকৃতিক", s:"organic", a:"artificial"},
+        {w:"Protect", p:"Verb", m:"রক্ষা করা", s:"defend", a:"harm"},
+        {w:"Relief", p:"Noun", m:"আরাম/মুক্তি", s:"comfort", a:"pain"},
+        {w:"Resistance", p:"Noun", m:"প্রতিরোধ", s:"hindrance", a:"support"},
+        {w:"Rural", p:"Adj", m:"গ্রাম্য", s:"rustic", a:"urban"},
+        {w:"Treatment", p:"Noun", m:"চিকিৎসা", s:"therapy", a:"—"}
+    ];
+
+    const quizData = [
+        {q: "What is the synonym of 'Ancient'?", a: "Antique", o: ["Modern", "Antique", "New", "Fresh"]},
+        {q: "Antonym of 'Rural' is:", a: "Urban", o: ["Rustic", "Village", "Urban", "Country"]},
+        {q: "'Decay' শব্দটির অর্থ কী?", a: "ক্ষয়", o: ["বৃদ্ধি", "ক্ষয়", "আরাম", "মলম"]},
+        {q: "Which word means 'adult'?", a: "Grown-up", o: ["Child", "Junior", "Grown-up", "Minor"]},
+        {q: "Synonym of 'Effective' is:", a: "Useful", o: ["Useless", "Handy", "Useful", "Minor"]},
+        {q: "Antonym of 'Increase' is:", a: "Decrease", o: ["Boost", "Decrease", "Heighten", "Raise"]},
+        {q: "Vitamin C builds ______ against disease.", a: "Resistance", o: ["Injury", "Relief", "Resistance", "Burn"]},
+        {q: "'Apply' এর অর্থ কী?", a: "প্রয়োগ করা", o: ["প্রয়োগ করা", "ফেলে দেওয়া", "কেনা", "খাওয়া"]},
+        {q: "Synonym of 'Heal' is:", a: "Recover", o: ["Hurt", "Recover", "Wound", "Damage"]},
+        {q: "Which one is a medicinal plant?", a: "Aloevera", o: ["Sugar", "Aloevera", "Rice", "Carrot"]},
+        {q: "Antonym of 'Common' is:", a: "Rare", o: ["Regular", "General", "Rare", "Normal"]},
+        {q: "The word 'Civilisation' means:", a: "সভ্যতা", o: ["অসভ্যতা", "সভ্যতা", "আঘাত", "গ্রাম"]},
+        {q: "What do you put on a cut?", a: "Ointment", o: ["Ointment", "Sugar", "Rice", "Lollipop"]},
+        {q: "Antonym of 'Against' is:", a: "For", o: ["Against", "For", "Opposite", "Towards"]},
+        {q: "Which one means 'মৃদুভাবে'?", a: "Mildly", o: ["Harshly", "Mildly", "Strongly", "Quickly"]},
+        {q: "'Pinch' of salt means:", a: "এক চিমটি", o: ["অনেকগুলো", "এক কেজি", "এক চিমটি", "অল্প একটু"]},
+        {q: "Synonym of 'Protect' is:", a: "Defend", o: ["Attack", "Harm", "Endanger", "Defend"]},
+        {q: "What does a doctor do?", a: "Prescribe", o: ["Describe", "Prescribe", "Subscribe", "Turn"]},
+        {q: "The word 'Rural' refers to:", a: "Village", o: ["City", "Village", "Market", "Office"]},
+        {q: "Antonym of 'Minor' is:", a: "Major", o: ["Small", "Little", "Major", "Slight"]}
+    ];
+
+    // Inject Table Data
+    const tableBody = document.getElementById('tableBody');
+    vocabulary.forEach(item => {
+        tableBody.innerHTML += `<tr>
+            <td><b>${item.w}</b></td>
+            <td>${item.p}</td>
+            <td>${item.m}</td>
+            <td>${item.s}</td>
+            <td>${item.a}</td>
+        </tr>`;
+    });
+
+    function filterTable() {
+        let input = document.getElementById("searchBox").value.toUpperCase();
+        let tr = document.getElementById("vocabTable").getElementsByTagName("tr");
+        for (let i = 1; i < tr.length; i++) {
+            tr[i].style.display = tr[i].innerText.toUpperCase().indexOf(input) > -1 ? "" : "none";
+        }
+    }
+
+    let currentQ = 0;
+    let score = 0;
+
+    function startQuiz() {
+        document.getElementById('setup-area').style.display = 'none';
+        document.getElementById('study-section').style.display = 'none';
+        document.getElementById('quiz-box').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const q = quizData[currentQ];
+        document.getElementById('q-text').innerText = q.q;
+        document.getElementById('q-count').innerText = `Question: ${currentQ + 1}/${quizData.length}`;
+        document.getElementById('progress').style.width = `${((currentQ + 1) / quizData.length) * 100}%`;
+        
+        const container = document.getElementById('opt-container');
+        container.innerHTML = '';
+        q.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(opt, btn);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, btn) {
+        const correct = quizData[currentQ].a;
+        const btns = document.querySelectorAll('.opt-btn');
+        btns.forEach(b => b.disabled = true);
+
+        if(selected === correct) {
+            score += 10;
+            btn.classList.add('correct');
+        } else {
+            score -= 2;
+            btn.classList.add('wrong');
+            btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+        document.getElementById('live-score').innerText = `Score: ${score}`;
+
+        setTimeout(() => {
+            currentQ++;
+            if(currentQ < quizData.length) showQuestion();
+            else showResult();
+        }, 1200);
+    }
+
+    function showResult() {
+        document.getElementById('quiz-box').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('feedback').innerText = score > 150 ? "Excellent Mastery, Proking!" : "Good job! Keep studying the library.";
+    }
+</script>
+
+</body>
+</html>

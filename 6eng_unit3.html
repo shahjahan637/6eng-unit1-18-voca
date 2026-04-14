@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3 Vocabulary Quiz - Proking</title>
+    <style>
+        :root {
+            --primary: #10b981; /* Emerald Green */
+            --secondary: #3b82f6; /* Blue */
+            --bg: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.8);
+            --text: #e2e8f0;
+            --accent: #fbbf24; /* Amber */
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0b0f19 0%, #111827 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Reading Section */
+        .study-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .study-box h2 {
+            color: var(--primary);
+            text-align: center;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sentence-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .sentence-list { grid-template-columns: 1fr 1fr; }
+        }
+
+        .sentence-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .word-tag { font-weight: bold; color: var(--accent); }
+
+        /* Quiz Box */
+        #quiz-app {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .progress-bar-container {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        #progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .q-title { font-size: 22px; margin-bottom: 25px; line-height: 1.4; }
+
+        .btn-grid { display: flex; flex-direction: column; gap: 15px; }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            border-radius: 15px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .correct { background: #059669 !important; border-color: #059669; color: white; }
+        .wrong { background: #dc2626 !important; border-color: #dc2626; color: white; }
+
+        #result-area { text-align: center; display: none; }
+        .score-text { font-size: 48px; color: var(--accent); margin: 20px 0; font-weight: 800; }
+        
+        .restart-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 45px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .restart-button:hover { background: var(--secondary); transform: scale(1.05); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="study-box">
+    <h2>প্রতিটি মূল শব্দ দিয়ে সহজ বাক্য:</h2>
+    <div class="sentence-list" id="study-list"></div>
+</div>
+
+<div id="quiz-app">
+    <div id="quiz-header">
+        <div class="stats-bar">
+            <span id="q-status">Question 1 of 12</span>
+            <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-bar-container">
+            <div id="progress-fill"></div>
+        </div>
+    </div>
+
+    <div id="quiz-content">
+        <h3 class="q-title" id="question-text">Loading...</h3>
+        <div class="btn-grid" id="options-box"></div>
+    </div>
+
+    <div id="result-area">
+        <h1 style="color: var(--primary)">Great Job, Proking!</h1>
+        <p>You have successfully completed Lesson 3 Test.</p>
+        <div class="score-text" id="final-score">0</div>
+        <button class="restart-button" onclick="location.reload()">Restart Quiz</button>
+    </div>
+</div>
+
+<script>
+    const sentencesData = [
+        "Carry: Please help me carry this bag. (দয়া করে আমাকে এই ব্যাগটি বহন করতে সাহায্য করো।)",
+        "Couple: An elderly couple was sitting on the bench. (এক বৃদ্ধ দম্পতি বেঞ্চে বসে ছিলেন।)",
+        "Crowded: The railway station is always crowded. (রেলওয়ে স্টেশন সবসময় জনাকীর্ণ থাকে।)",
+        "Each other: They helped each other with the luggage. (তারা মালামাল নিয়ে একে অপরকে সাহায্য করেছিল।)",
+        "Elder: My elder brother is a doctor. (আমার বড় ভাই একজন ডাক্তার।)",
+        "Heavy: This suitcase is very heavy. (এই সুটকেসটি খুব ভারী।)",
+        "Hold: Please hold my hand in the crowd. (ভিড়ের মধ্যে দয়া করে আমার হাত ধরো।)",
+        "In front of: There is a big tree in front of our school. (আমাদের স্কুলের সামনে একটি বড় গাছ আছে।)",
+        "Leave: The train will leave at 10 AM. (ট্রেনটি সকাল ১০টায় ছেড়ে যাবে।)",
+        "Loudly: Don't talk so loudly in the library. (লাইব্রেরিতে এত উচ্চস্বরে কথা বলো না।)",
+        "Opposite: My house is opposite the park. (পার্কের বিপরীত দিকে আমার বাড়ি।)",
+        "Pick up: Can you pick up that paper from the floor? (তুমি কি মেঝে থেকে ওই কাগজটি তুলতে পারবে।)",
+        "Queue: We stood in a long queue for tickets. (আমরা টিকিটের জন্য দীর্ঘ সারিতে দাঁড়িয়েছিলাম।)",
+        "Quiet: The station became quiet after the train left. (ট্রেনটি ছেড়ে যাওয়ার পর স্টেশনটি শান্ত হয়ে গেল।)",
+        "Rest: You should take some rest now. (তোমার এখন কিছুটা বিশ্রাম নেওয়া উচিত।)",
+        "See off: I went to the station to see off my friend. (আমি আমার বন্ধুকে বিদায় দিতে স্টেশনে গিয়েছিলাম।)",
+        "Stall: I bought a magazine from the book stall. (আমি বইয়ের স্টল থেকে একটি ম্যাগাজিন কিনলাম।)",
+        "Suppose: Suppose you are the captain of the team. (ধরা যাক তুমি দলের অধিনায়ক।)",
+        "Tightly: Hold the railing tightly. (রেলিংটি শক্ত করে ধরো।)",
+        "Whistle: The guard blew the whistle to start the train. (ট্রেন ছাড়ার জন্য গার্ড বাঁশি বাজালেন।)",
+        "Young: A young man was selling tea. (একজন যুবক চা বিক্রি করছিল।)"
+    ];
+
+    const quizQuestions = [
+        { q: "What is the synonym of 'Crowded'?", a: "Congested", o: ["Empty", "Vacant", "Congested", "Deserted"] },
+        { q: "'Opposite' এর বাংলা অর্থ কী?", a: "বিপরীত", o: ["সামনে", "বিপরীত", "একই", "পিছনে"] },
+        { q: "What is the Antonym of 'Heavy'?", a: "Light", o: ["Massive", "Weighty", "Light", "Bulky"] },
+        { q: "Which Parts of Speech is 'Loudly'?", a: "Adverb", o: ["Noun", "Adjective", "Adverb", "Verb"] },
+        { q: "Complete: 'We stood in a long ____ for tickets.'", a: "queue", o: ["stall", "queue", "rest", "whistle"] },
+        { q: "What is the synonym of 'See off'?", a: "Bid farewell", o: ["Welcome", "Bid farewell", "Greet", "Receive"] },
+        { q: "Antonym of 'Leave' is:", a: "Arrive", o: ["Arrive", "Depart", "Exit", "Quit"] },
+        { q: "Which word means 'বড় (বয়সে)'?", a: "Elder", o: ["Younger", "Junior", "Elder", "Baby"] },
+        { q: "Synonym of 'Suppose' is:", a: "Imagine", o: ["Know", "Prove", "Imagine", "Verify"] },
+        { q: "How should you hold the railing?", a: "Tightly", o: ["Loosely", "Weakly", "Tightly", "Slowly"] },
+        { q: "What is the Noun form of 'Carry'?", a: "Carriage", o: ["Carriage", "Carried", "Carry", "Carrier"] },
+        { q: "Antonym of 'Quiet' is:", a: "Noisy", o: ["Calm", "Peaceful", "Silent", "Noisy"] }
+    ];
+
+    // Populate Study List
+    const studyList = document.getElementById('study-list');
+    sentencesData.forEach(sentence => {
+        const div = document.createElement('div');
+        div.className = 'sentence-card';
+        const parts = sentence.split(':');
+        div.innerHTML = `<span class="word-tag">${parts[0]}:</span>${parts[1]}`;
+        studyList.appendChild(div);
+    });
+
+    let currentQIdx = 0;
+    let currentScore = 0;
+
+    function loadQuestion() {
+        const qData = quizQuestions[currentQIdx];
+        document.getElementById('question-text').innerText = qData.q;
+        document.getElementById('q-status').innerText = `Question ${currentQIdx + 1} of ${quizQuestions.length}`;
+        document.getElementById('progress-fill').style.width = `${((currentQIdx + 1) / quizQuestions.length) * 100}%`;
+        
+        const optionsBox = document.getElementById('options-box');
+        optionsBox.innerHTML = '';
+
+        qData.o.forEach(option => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = option;
+            btn.onclick = () => handleAnswer(option, btn);
+            optionsBox.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(selected, btn) {
+        const correctAns = quizQuestions[currentQIdx].a;
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        if (selected === correctAns) {
+            currentScore += 10;
+            btn.classList.add('correct');
+        } else {
+            currentScore -= 2;
+            btn.classList.add('wrong');
+            allBtns.forEach(b => {
+                if(b.innerText === correctAns) b.classList.add('correct');
+            });
+        }
+
+        document.getElementById('score-text').innerText = `Score: ${currentScore}`;
+
+        setTimeout(() => {
+            currentQIdx++;
+            if (currentQIdx < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }, 1200);
+    }
+
+    function showResults() {
+        document.getElementById('quiz-content').style.display = 'none';
+        document.getElementById('quiz-header').style.display = 'none';
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
+        document.getElementById('final-score').innerText = currentScore;
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>

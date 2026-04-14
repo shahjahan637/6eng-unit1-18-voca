@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6 Vocabulary Quiz - Proking</title>
+    <style>
+        :root {
+            --primary: #a855f7;
+            --secondary: #6366f1;
+            --accent: #22d3ee;
+            --bg: #0f172a;
+            --card: rgba(30, 41, 59, 0.7);
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(at 0% 0%, rgba(168, 85, 247, 0.15) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Study Section */
+        .study-box {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .study-box h2 {
+            text-align: center;
+            color: var(--accent);
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .grid-sentences {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-sentences { grid-template-columns: 1fr 1fr; }
+        }
+
+        .sentence-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14.5px;
+            border-left: 4px solid var(--primary);
+            transition: 0.3s;
+        }
+
+        .sentence-item:hover { background: rgba(255, 255, 255, 0.1); }
+        .word-bold { color: var(--accent); font-weight: bold; }
+
+        /* Quiz UI */
+        #quiz-frame {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 35px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        }
+
+        .quiz-top { display: flex; justify-content: space-between; margin-bottom: 10px; color: #94a3b8; font-weight: 600; }
+        .progress-line { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        #progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: 0.5s ease; }
+
+        .q-text { font-size: 20px; margin-bottom: 25px; line-height: 1.5; color: #fff; }
+        .btn-list { display: grid; gap: 12px; }
+
+        .opt-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 14px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .opt-btn:hover:not([disabled]) { background: rgba(168, 85, 247, 0.2); border-color: var(--primary); transform: translateX(5px); }
+        .correct { background: #10b981 !important; border-color: #10b981; }
+        .wrong { background: #ef4444 !important; border-color: #ef4444; }
+
+        #final-page { text-align: center; display: none; padding: 20px 0; }
+        .score-val { font-size: 50px; font-weight: 800; color: var(--accent); margin: 15px 0; }
+        .retry-btn { background: var(--primary); color: white; border: none; padding: 14px 35px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 17px; margin-top: 20px; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="study-box">
+    <h2>Lesson 6 Study Guide</h2>
+    <div class="grid-sentences" id="sentence-list"></div>
+</div>
+
+<div id="quiz-frame">
+    <div id="quiz-body">
+        <div class="quiz-top">
+            <span id="q-stat">Q: 1/12</span>
+            <span id="live-pts">Score: 0</span>
+        </div>
+        <div class="progress-line"><div id="progress-bar"></div></div>
+        
+        <div id="q-holder">
+            <div class="q-text" id="q-display">Loading...</div>
+            <div class="btn-list" id="opt-box"></div>
+        </div>
+    </div>
+
+    <div id="final-page">
+        <h2 style="color: var(--primary)">All Done, Proking!</h2>
+        <div class="score-val" id="final-score">0</div>
+        <p id="feedback-txt" style="color: #94a3b8; font-style: italic;"></p>
+        <button class="retry-btn" onclick="location.reload()">Take Lesson 6 Again</button>
+    </div>
+</div>
+
+<script>
+    const lesson6 = [
+        "Chief: Rice is our chief food. (ভাত আমাদের প্রধান খাদ্য।)",
+        "Cook: My mother can cook very well. (আমার মা খুব ভালো রান্না করতে পারেন।)",
+        "Delicious: This cake is really delicious. (এই কেকটি সত্যিই সুস্বাদু।)",
+        "Favourite: Blue is my favourite color. (নীল আমার প্রিয় রঙ।)",
+        "Ill: He could not come because he is ill. (সে আসতে পারেনি কারণ সে অসুস্থ।)",
+        "Living room: We are watching TV in the living room. (আমরা বসার ঘরে টিভি দেখছি।)",
+        "Remember: I always remember my childhood days. (আমি সবসময় আমার শৈশবের দিনগুলো মনে রাখি।)",
+        "Rule: We must follow the rules of health. (আমাদের অবশ্যই স্বাস্থ্যবিধি মেনে চলা উচিত।)",
+        "Smell: I love the smell of roses. (আমি গোলাপের গন্ধ ভালোবাসি।)",
+        "Special: Today is a special day for me. (আজ আমার জন্য একটি বিশেষ দিন।)",
+        "Suddenly: Suddenly it started raining. (হঠাৎ বৃষ্টি শুরু হলো।)",
+        "Taste: Can I taste a bit of this soup? (আমি কি এই সুপটি একটু চেখে দেখতে পারি।)",
+        "Usually: I usually go to bed at 10 PM. (আমি সাধারণত রাত ১০টায় ঘুমাতে যাই।)",
+        "Weekly: We have a weekly holiday on Friday. (শুক্রবার আমাদের সাপ্তাহিক ছুটি।)",
+        "Younger: I have a younger sister. (আমার একটি ছোট বোন আছে।)"
+    ];
+
+    const quizData = [
+        { q: "What is the synonym of 'Delicious'?", a: "Savory", o: ["Flavorless", "Savory", "Awful", "Bland"] },
+        { q: "'Suddenly' এর বাংলা অর্থ কোনটি?", a: "হঠাৎ", o: ["ধীরে ধীরে", "সাধারণত", "হঠাৎ", "সবসময়"] },
+        { q: "Antonym of 'Remember' is:", a: "Forget", o: ["Recall", "Recollect", "Forget", "Notice"] },
+        { q: "Complete: 'Rice is our ______ food.'", a: "chief", o: ["weekly", "chief", "ill", "sudden"] },
+        { q: "Which Parts of Speech is 'Usually'?", a: "Adverb", o: ["Noun", "Adjective", "Adverb", "Verb"] },
+        { q: "Synonym of 'Special' is:", a: "Unique", o: ["Common", "Unique", "Normal", "Ordinary"] },
+        { q: "Antonym of 'Younger' is:", a: "Elder", o: ["Junior", "Little", "Elder", "Small"] },
+        { q: "Where do we usually watch TV?", a: "Living room", o: ["Kitchen", "Bathroom", "Living room", "Attic"] },
+        { q: "'Rule' এর সমার্থক শব্দ কোনটি?", a: "Law", o: ["Disorder", "Law", "Chaos", "Mistake"] },
+        { q: "What is the Antonym of 'Ill'?", a: "Fit", o: ["Sick", "Unwell", "Fit", "Unhealthy"] },
+        { q: "Which word is used for 'সাপ্তাহিক'?", a: "Weekly", o: ["Daily", "Monthly", "Weekly", "Yearly"] },
+        { q: "Fill: 'I love the ______ of roses.'", a: "smell", o: ["taste", "smell", "rule", "cook"] }
+    ];
+
+    const listDiv = document.getElementById('sentence-list');
+    lesson6.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'sentence-item';
+        const parts = s.split(':');
+        div.innerHTML = `<span class="word-bold">${parts[0]}:</span>${parts[1]}`;
+        listDiv.appendChild(div);
+    });
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function renderQ() {
+        const data = quizData[currentIdx];
+        document.getElementById('q-display').innerText = data.q;
+        document.getElementById('q-stat').innerText = `Q: ${currentIdx + 1}/${quizData.length}`;
+        document.getElementById('progress-bar').style.width = `${((currentIdx + 1) / quizData.length) * 100}%`;
+        
+        const box = document.getElementById('opt-box');
+        box.innerHTML = '';
+        data.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = opt;
+            btn.onclick = () => check(opt, btn);
+            box.appendChild(btn);
+        });
+    }
+
+    function check(sel, btn) {
+        const correct = quizData[currentIdx].a;
+        const all = document.querySelectorAll('.opt-btn');
+        all.forEach(b => b.disabled = true);
+
+        if (sel === correct) {
+            score += 10;
+            btn.classList.add('correct');
+        } else {
+            score -= 2;
+            btn.classList.add('wrong');
+            all.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+        document.getElementById('live-pts').innerText = `Score: ${score}`;
+
+        setTimeout(() => {
+            currentIdx++;
+            if (currentIdx < quizData.length) renderQ();
+            else finish();
+        }, 1200);
+    }
+
+    function finish() {
+        document.getElementById('quiz-body').style.display = 'none';
+        document.getElementById('final-page').style.display = 'block';
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('feedback-txt').innerText = score > 100 ? "You're a Lesson 6 Legend, Proking! 🎯" : "Great effort! Review and try again.";
+    }
+
+    renderQ();
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary Quiz - Proking</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #f8fafc;
+            --accent: #22d3ee;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1e3f 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Vocabulary Section Styling */
+        .vocab-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .vocab-section h2 {
+            color: var(--accent);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .vocab-list {
+            column-count: 1;
+            line-height: 1.8;
+        }
+
+        @media (min-width: 600px) {
+            .vocab-list { column-count: 2; column-gap: 30px; }
+        }
+
+        .vocab-item { margin-bottom: 10px; font-size: 15px; }
+        .word { font-weight: bold; color: var(--secondary); }
+
+        /* Quiz Container Styling */
+        #quiz-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .header { text-align: center; margin-bottom: 20px; }
+        .progress-container { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 20px; }
+        #progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; border-radius: 4px; transition: width 0.3s ease; }
+        .stats { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; color: #94a3b8; }
+        #question-box h2 { font-size: 22px; margin-bottom: 20px; }
+        .options-grid { display: grid; gap: 12px; }
+
+        button.option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        button.option:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
+        button.correct { background: #22c55e !important; border-color: #22c55e; }
+        button.wrong { background: #ef4444 !important; border-color: #ef4444; }
+
+        #result-screen { text-align: center; display: none; }
+        .btn-restart { background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="vocab-section">
+    <h2>প্রতিটি শব্দ দিয়ে সহজ বাক্য:</h2>
+    <div class="vocab-list">
+        <div class="vocab-item"><span class="word">Amusing:</span> The cartoon was very amusing. (কার্টুনটি খুব মজার ছিল।)</div>
+        <div class="vocab-item"><span class="word">Afraid:</span> I am not afraid of ghosts. (আমি ভূতকে ভয় পাই না।)</div>
+        <div class="vocab-item"><span class="word">Collect:</span> I like to collect old coins. (আমি পুরনো মুদ্রা সংগ্রহ করতে পছন্দ করি।)</div>
+        <div class="vocab-item"><span class="word">Comic:</span> He told us a comic story. (সে আমাদের একটি হাস্যরসাত্মক গল্প বলেছিল।)</div>
+        <div class="vocab-item"><span class="word">Excited:</span> I am very excited about my new school. (আমি আমার নতুন স্কুল নিয়ে খুব অধীর।)</div>
+        <div class="vocab-item"><span class="word">Find:</span> Can you find my pen? (তুমি কি আমার কলমটি খুঁজে পাবে?)</div>
+        <div class="vocab-item"><span class="word">Finished:</span> I have finished my homework. (আমি আমার বাড়ির কাজ শেষ করেছি।)</div>
+        <div class="vocab-item"><span class="word">Following:</span> We will go there the following day. (আমরা সেখানে পরের দিন যাব।)</div>
+        <div class="vocab-item"><span class="word">Friendly:</span> Our new teacher is very friendly. (আমাদের নতুন শিক্ষক খুব বন্ধুত্বপূর্ণ।)</div>
+        <div class="vocab-item"><span class="word">Frightened:</span> The little boy was frightened by the dog. (ছোট ছেলেটি কুকুরটিকে দেখে শঙ্কিত হয়েছিল।)</div>
+        <div class="vocab-item"><span class="word">Fun:</span> We had a lot of fun at the party. (আমরা পার্টিতে অনেক মজা করেছিলাম।)</div>
+        <div class="vocab-item"><span class="word">Greet:</span> Always greet your elders with a smile. (বড়দের সবসময় হাসিমুখে অভিবাদন জানাবে।)</div>
+        <div class="vocab-item"><span class="word">Glad:</span> I am glad to see you. (তোমাকে দেখে আমি খুশি হলাম।)</div>
+        <div class="vocab-item"><span class="word">Happen:</span> What will happen next? (এরপর কী ঘটবে?)</div>
+        <div class="vocab-item"><span class="word">Hobby:</span> Gardening is my favorite hobby. (বাগান করা আমার প্রিয় শখ।)</div>
+        <div class="vocab-item"><span class="word">Information:</span> Thank you for the information. (তথ্যের জন্য আপনাকে ধন্যবাদ।)</div>
+        <div class="vocab-item"><span class="word">Interesting:</span> This book is very interesting. (এই বইটি খুব আকর্ষণীয়।)</div>
+        <div class="vocab-item"><span class="word">Laugh:</span> Don't laugh at others. (অন্যদের দেখে হাসাহাসি করো না।)</div>
+        <div class="vocab-item"><span class="word">Laughter:</span> The room was filled with laughter. (ঘরটি হাসিতে ভরে উঠেছিল।)</div>
+        <div class="vocab-item"><span class="word">Loudest:</span> He spoke in the loudest voice. (সে সবচেয়ে উচ্চস্বরে কথা বলেছিল।)</div>
+        <div class="vocab-item"><span class="word">Match:</span> Can you match these colors? (তুমি কি এই রঙগুলো মেলাতে পারবে।)</div>
+        <div class="vocab-item"><span class="word">More:</span> I need more time to finish. (শেষ করার জন্য আমার আরও সময় প্রয়োজন।)</div>
+        <div class="vocab-item"><span class="word">Move:</span> Please move to the next chair. (দয়া করে পরের আসনে যান।)</div>
+        <div class="vocab-item"><span class="word">Peanut:</span> I like to eat peanuts. (আমি চীনাবাদাম খেতে পছন্দ করি।)</div>
+        <div class="vocab-item"><span class="word">Reach:</span> We will reach the station soon. (আমরা শীঘ্রই স্টেশনে পৌঁছাব।)</div>
+        <div class="vocab-item"><span class="word">Really:</span> It is really a beautiful place. (এটি সত্যিই একটি সুন্দর জায়গা।)</div>
+        <div class="vocab-item"><span class="word">Seat:</span> Please take your seat. (দয়া করে আপনার আসনে বসুন।)</div>
+        <div class="vocab-item"><span class="word">Shy:</span> The girl is very shy. (মেয়েটি খুব লাজুক।)</div>
+        <div class="vocab-item"><span class="word">Similar:</span> They have similar dresses. (তাদের একই ধরনের পোশাক আছে।)</div>
+        <div class="vocab-item"><span class="word">Sometime:</span> Come to our house sometime. (কোনো এক সময় আমাদের বাড়িতে এসো।)</div>
+        <div class="vocab-item"><span class="word">Thrilled:</span> I was thrilled to win the prize. (পুরস্কারটি জিতে আমি রোমাঞ্চিত হয়েছিলাম।)</div>
+        <div class="vocab-item"><span class="word">Want:</span> I want a glass of water. (আমি এক গ্লাস পানি চাই।)</div>
+        <div class="vocab-item"><span class="word">Warmly:</span> They welcomed us warmly. (তারা আমাদের আন্তরিকভাবে স্বাগত জানিয়েছিলেন।)</div>
+    </div>
+</div>
+
+<div id="quiz-container">
+    <div class="header">
+        <h1>Lesson 1 MCQ Test</h1>
+        <div class="stats">
+            <span id="q-count">Question: 1/10</span>
+            <span id="score-display">Score: 0</span>
+        </div>
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+
+    <div id="question-box">
+        <h2 id="question-text">Loading question...</h2>
+        <div class="options-grid" id="options-container"></div>
+    </div>
+
+    <div id="result-screen">
+        <h2>Quiz Completed!</h2>
+        <p id="final-score" style="font-size: 24px; color: var(--secondary);"></p>
+        <div id="performance-msg"></div>
+        <button class="btn-restart" onclick="location.reload()">Restart Quiz</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        { q: "What is the synonym of 'Amusing'?", a: "Funny", o: ["Serious", "Funny", "Boring", "Dull"] },
+        { q: "'Frightened' এর বাংলা অর্থ কী?", a: "শঙ্কিত", o: ["সাহসী", "শান্ত", "শঙ্কিত", "রাগান্বিত"] },
+        { q: "Antonym of 'Collect' is:", a: "Scatter", o: ["Gather", "Assemble", "Scatter", "Accumulate"] },
+        { q: "What is the Noun form of 'Excite'?", a: "Excitement", o: ["Excited", "Exciting", "Excitement", "Excite"] },
+        { q: "Which one is a synonym of 'Friendly'?", a: "Amicable", o: ["Hostile", "Amicable", "Mean", "Unfriendly"] },
+        { q: "Complete the sentence: 'I like to ______ old coins.'", a: "collect", o: ["match", "collect", "move", "happen"] },
+        { q: "Antonym of 'Shy' is:", a: "Confident", o: ["Timid", "Bashful", "Nervous", "Confident"] },
+        { q: "Which word means 'পৌঁছানো'?", a: "Reach", o: ["Reach", "Move", "Greet", "Find"] },
+        { q: "Synonym of 'Thrilled' is:", a: "Overjoyed", o: ["Bored", "Worried", "Overjoyed", "Unhappy"] },
+        { q: "What is the sentence for 'Peanut'?", a: "I like to eat peanuts.", o: ["I like to eat peanuts.", "Peanut is a fruit.", "He is a peanut.", "Peanuts are blue."] }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    const qText = document.getElementById('question-text');
+    const optionsCont = document.getElementById('options-container');
+    const qCount = document.getElementById('q-count');
+    const scoreDisp = document.getElementById('score-display');
+    const progressBar = document.getElementById('progress-bar');
+
+    function loadQuestion() {
+        const currentData = quizData[currentQ];
+        qText.innerText = currentData.q;
+        optionsCont.innerHTML = '';
+        
+        qCount.innerText = `Question: ${currentQ + 1}/${quizData.length}`;
+        progressBar.style.width = `${((currentQ) / quizData.length) * 100}%`;
+
+        currentData.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.classList.add('option');
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(opt, btn);
+            optionsCont.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, btn) {
+        const correct = quizData[currentQ].a;
+        const allBtns = document.querySelectorAll('.option');
+        allBtns.forEach(b => b.disabled = true);
+
+        if (selected === correct) {
+            score += 10;
+            btn.classList.add('correct');
+        } else {
+            score -= 2;
+            btn.classList.add('wrong');
+            allBtns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+
+        scoreDisp.innerText = `Score: ${score}`;
+        
+        setTimeout(() => {
+            currentQ++;
+            if (currentQ < quizData.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }, 1200);
+    }
+
+    function showResult() {
+        document.getElementById('question-box').style.display = 'none';
+        document.querySelector('.header').style.display = 'none';
+        const resScreen = document.getElementById('result-screen');
+        resScreen.style.display = 'block';
+        document.getElementById('final-score').innerText = `Final Score: ${score}`;
+        
+        let msg = score > 70 ? "Excellent, Proking! 🏆" : (score > 40 ? "Good Job! 👍" : "Keep Practicing! 📚");
+        document.getElementById('performance-msg').innerText = msg;
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>

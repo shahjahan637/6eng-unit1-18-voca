@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary Quiz Lesson 2 - Proking</title>
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --secondary: #ec4899;
+            --bg: #020617;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f1f5f9;
+            --accent: #22d3ee;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #020617 0%, #1e1b4b 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Vocabulary Table Styling */
+        .vocab-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .vocab-container h2 {
+            color: var(--accent);
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .sentence-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .sentence-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .sentence-item {
+            background: rgba(255,255,255,0.03);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .word-bold { font-weight: bold; color: var(--accent); }
+
+        /* Quiz UI */
+        #quiz-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 35px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .header-quiz { text-align: center; margin-bottom: 25px; }
+        .progress-wrapper { height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden; margin: 15px 0; }
+        #bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.4s ease; }
+        
+        .stat-line { display: flex; justify-content: space-between; font-weight: bold; color: #cbd5e1; }
+        
+        #question-area h3 { font-size: 20px; margin-bottom: 25px; line-height: 1.4; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .opt-btn {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 14px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .opt-btn:hover:not([disabled]) { background: rgba(255, 255, 255, 0.15); transform: scale(1.02); }
+        .right { background: #10b981 !important; border-color: #10b981; }
+        .wrong { background: #ef4444 !important; border-color: #ef4444; }
+
+        #final-screen { text-align: center; display: none; }
+        .reload-btn { background: var(--primary); border: none; padding: 15px 40px; color: white; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 25px; transition: 0.3s; }
+        .reload-btn:hover { background: var(--secondary); }
+    </style>
+</head>
+<body>
+
+<div class="vocab-container">
+    <h2>প্রতিটি মূল শব্দ দিয়ে সহজ বাক্য:</h2>
+    <div class="sentence-grid" id="sentence-list">
+        </div>
+</div>
+
+<div id="quiz-box">
+    <div class="header-quiz">
+        <h2 style="margin:0">Lesson 2 Vocabulary Test</h2>
+        <div class="progress-wrapper"><div id="bar"></div></div>
+        <div class="stat-line">
+            <span id="q-idx">Question: 1/12</span>
+            <span id="score-val">Score: 0</span>
+        </div>
+    </div>
+
+    <div id="question-area">
+        <h3 id="q-text">Loading...</h3>
+        <div class="options-list" id="opt-container"></div>
+    </div>
+
+    <div id="final-screen">
+        <h1 style="color: var(--accent);">Result Summary</h1>
+        <p id="total-points" style="font-size: 32px; margin: 10px 0;"></p>
+        <p id="feedback" style="font-style: italic; color: #94a3b8;"></p>
+        <button class="reload-btn" onclick="location.reload()">Take Lesson 2 Test Again</button>
+    </div>
+</div>
+
+<script>
+    const sentences = [
+        "Come out: Our exam result will come out tomorrow. (আমাদের পরীক্ষার ফলাফল আগামীকাল প্রকাশিত হবে।)",
+        "Competition: She won the first prize in the singing competition. (সে গান প্রতিযোগিতায় প্রথম পুরস্কার জিতেছে।)",
+        "Congratulations: Congratulations on your great success! (তোমার দারুণ সাফল্যের জন্য অভিনন্দন!)",
+        "Conversation: I had a long conversation with my friend. (বন্ধুর সাথে আমার দীর্ঘ কথোপকথন হয়েছে।)",
+        "Different: This pen is different from that one. (এই কলমটি ওইটি থেকে আলাদা।)",
+        "Drop: Be careful, don't drop the glass. (সাবধান, গ্লাসটি ফেলে দিও না।)",
+        "Excited: The kids are excited about the picnic. (বাচ্চারা পিকনিক নিয়ে খুব উচ্ছ্বাসিত।)",
+        "Expression: Her facial expression was very happy. (তার মুখের অভিব্যক্তি খুব হাসিখুশি ছিল।)",
+        "Feel: I feel very happy today. (আজ আমি খুব খুশি অনুভব করছি।)",
+        "Folk: We love listening to folk music. (আমরা লোকসংগীত শুনতে ভালোবাসি।)",
+        "Flu: He is staying at home because of the flu. (ইনফ্লুয়েঞ্জার কারণে সে বাড়িতে আছে।)",
+        "Generation: Every generation has its own style. (প্রতিটি প্রজন্মের নিজস্ব ধরন থাকে।)",
+        "Independence: Bangladesh gained independence in 1971. (১৯৭১ সালে বাংলাদেশ স্বাধীনতা লাভ করে।)",
+        "Lose: Don't lose your umbrella. (তোমার ছাতাটি হারিও না।)",
+        "Luck: Good luck for your examination! (তোমার পরীক্ষার জন্য শুভকামনা!)",
+        "Marvelous: The weather is marvelous today. (আজকের আবহাওয়া চমৎকার।)",
+        "Matter: It doesn't matter what they say. (তারা কী বলে তাতে কিছু যায় আসে না।)",
+        "Occasion: Eid is a grand occasion for us. (ঈদ আমাদের জন্য একটি বড় উৎসবের উপলক্ষ।)",
+        "Often: I often visit my grandmother's house. (আমি প্রায়ই আমার দাদির বাড়িতে যাই।)",
+        "Participate: You should participate in school sports. (তোমার স্কুলের খেলাধুলায় অংশগ্রহণ করা উচিত।)",
+        "Popular: Cricket is a popular game in Bangladesh. (ক্রিকেট বাংলাদেশে একটি জনপ্রিয় খেলা।)",
+        "Proud: I am proud of my country. (আমি am proud of my country।)",
+        "Quiet: Please be quiet in the library. (দয়া করে লাইব্রেরিতে চুপ থাকো।)",
+        "Quite: The story is quite interesting. (গল্পটি বেশ আকর্ষণীয়।)",
+        "Recently: I have recently moved to a new house. (আমি সম্প্রতি একটি নতুন বাড়িতে উঠেছি।)",
+        "Remember: Always remember to brush your teeth. (সবসময় দাঁত মাজার কথা মনে রাখবে।)",
+        "Respond: He did not respond to my call. (সে আমার ডাকে সাড়া দেয়নি।)",
+        "Routine: We should follow a daily routine. (আমাদের একটি দৈনিক রুটিন অনুসরণ করা উচিত।)",
+        "Somewhere: I left my keys somewhere. (আমি আমার চাবিগুলো কোথাও রেখে এসেছি।)",
+        "Take care: Please take care of your health. (দয়া করে তোমার স্বাস্থ্যের যত্ন নিও।)",
+        "Understand: Do you understand this lesson? (তুমি কি এই পাঠটি বুঝতে পেরেছ?)",
+        "By the way: By the way, what is your name? (যা হোক, তোমার নাম কী?)",
+        "Young: He is a young and talented boy. (সে একজন তরুণ এবং মেধাবী ছেলে।)"
+    ];
+
+    const quizData = [
+        { q: "What is the synonym of 'Marvelous'?", a: "Splendid", o: ["Ordinary", "Splendid", "Poor", "Awful"] },
+        { q: "'Independence' এর বিপরীত শব্দ (Antonym) কোনটি?", a: "Slavery", o: ["Liberation", "Freedom", "Slavery", "Liberty"] },
+        { q: "Which word means 'প্রায়ই'?", a: "Often", o: ["Often", "Seldom", "Rarely", "Never"] },
+        { q: "The word 'Popular' is which Parts of Speech?", a: "Adjective", o: ["Noun", "Verb", "Adjective", "Adverb"] },
+        { q: "What is the synonym of 'Respond'?", a: "Reply", o: ["Ignore", "Reply", "Bypass", "Hide"] },
+        { q: "Fill in the blank: 'He won the first prize in the singing ____.'", a: "competition", o: ["generation", "competition", "routine", "expression"] },
+        { q: "What is the Antonym of 'Remember'?", a: "Forget", o: ["Recall", "Recollect", "Forget", "Notice"] },
+        { q: "Choose the correct meaning of 'Marvelous'.", a: "চমৎকার", o: ["ভয়ঙ্কর", "সাধারণ", "চমৎকার", "অদ্ভুদ"] },
+        { q: "Which one is the Phrasal Verb of 'যত্ন নেওয়া'?", a: "Take care", o: ["Come out", "Take care", "Drop off", "Go on"] },
+        { q: "'Quiet' এর Antonym কোনটি?", a: "Noisy", o: ["Calm", "Silent", "Noisy", "Peaceful"] },
+        { q: "What is the Noun form of 'Compete'?", a: "Competition", o: ["Competed", "Competitive", "Competition", "Compete"] },
+        { q: "Synonym of 'Recently' is:", a: "Lately", o: ["Lately", "Long ago", "Formerly", "Always"] }
+    ];
+
+    // Inject sentences
+    const listDiv = document.getElementById('sentence-list');
+    sentences.forEach(s => {
+        const item = document.createElement('div');
+        item.className = 'sentence-item';
+        const parts = s.split(':');
+        item.innerHTML = `<span class="word-bold">${parts[0]}:</span>${parts[1]}`;
+        listDiv.appendChild(item);
+    });
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function renderQuestion() {
+        const data = quizData[currentIdx];
+        document.getElementById('q-text').innerText = data.q;
+        document.getElementById('q-idx').innerText = `Question: ${currentIdx + 1}/${quizData.length}`;
+        document.getElementById('bar').style.width = `${((currentIdx) / quizData.length) * 100}%`;
+        
+        const container = document.getElementById('opt-container');
+        container.innerHTML = '';
+
+        data.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAns(opt, btn);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAns(choice, btn) {
+        const correct = quizData[currentIdx].a;
+        const allBtns = document.querySelectorAll('.opt-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        if (choice === correct) {
+            score += 10;
+            btn.classList.add('right');
+        } else {
+            score -= 2;
+            btn.classList.add('wrong');
+            allBtns.forEach(b => { if(b.innerText === correct) b.classList.add('right'); });
+        }
+
+        document.getElementById('score-val').innerText = `Score: ${score}`;
+
+        setTimeout(() => {
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }, 1300);
+    }
+
+    function showResult() {
+        document.getElementById('question-area').style.display = 'none';
+        document.querySelector('.header-quiz').style.display = 'none';
+        const res = document.getElementById('final-screen');
+        res.style.display = 'block';
+        document.getElementById('total-points').innerText = `Points: ${score}`;
+        document.getElementById('feedback').innerText = score > 80 ? "Ultra Pro Max Performance, Proking! 🚀" : "Great effort! Keep it up.";
+    }
+
+    renderQuestion();
+</script>
+</body>
+</html>

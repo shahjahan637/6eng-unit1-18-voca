@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 13 Part 2 - Advanced Grammar Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #6366f1;
+            --accent-soft: #eef2ff;
+            --success: #059669;
+            --warning: #dc2626;
+            --white: #ffffff;
+            --gray-light: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 20px;
+            color: var(--primary-dark);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-box {
+            background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2);
+        }
+
+        .header-box h1 { margin: 0; font-size: 2.5rem; font-weight: 700; }
+        .header-box p { font-weight: 300; margin-top: 10px; opacity: 0.9; }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        h2 {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--brand-color);
+            margin-bottom: 25px;
+        }
+
+        h2::before {
+            content: '';
+            width: 8px;
+            height: 30px;
+            background: var(--brand-color);
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+
+        /* Responsive Table Design */
+        .responsive-table {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        thead tr {
+            background-color: var(--gray-light);
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 16px 15px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: var(--accent-soft); }
+
+        /* Chips & Tags */
+        .word-main { font-weight: 700; color: var(--primary-dark); font-size: 1.1rem; }
+        .bn-meaning { color: var(--brand-color); font-weight: 600; }
+        
+        .pos-cell { font-family: 'Courier New', monospace; font-size: 0.9rem; }
+        .pos-empty { color: #cbd5e1; }
+
+        .syn-text { color: var(--success); font-weight: 500; }
+        .ant-text { color: var(--warning); font-weight: 500; }
+
+        /* Grid for Cards in Mobile */
+        @media (max-width: 768px) {
+            .header-box h1 { font-size: 1.8rem; }
+            .card { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <header class="header-box">
+        <h1>Lesson 13 - Part 2</h1>
+        <p>Mastering Vocabulary: Forms, Meanings, and Contexts</p>
+    </header>
+
+    <div class="card">
+        <h2>শব্দ ও ব্যাকরণ বিশ্লেষণ (Word & Grammar Analysis)</h2>
+        <div class="responsive-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Word (মূল শব্দ)</th>
+                        <th>Meaning (অর্থ)</th>
+                        <th>Noun</th>
+                        <th>Verb</th>
+                        <th>Adjective</th>
+                        <th>Adverb</th>
+                        <th>Synonyms</th>
+                        <th>Antonyms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="word-main">Mention</td>
+                        <td class="bn-meaning">উল্লেখ করা</td>
+                        <td class="pos-cell">Mention</td>
+                        <td class="pos-cell">Mention</td>
+                        <td class="pos-cell">Mentionable</td>
+                        <td class="pos-empty">—</td>
+                        <td class="syn-text">Refer, Cite</td>
+                        <td class="ant-text">Hide, Conceal</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Organize</td>
+                        <td class="bn-meaning">আয়োজন করা</td>
+                        <td class="pos-cell">Organization</td>
+                        <td class="pos-cell">Organize</td>
+                        <td class="pos-cell">Organized</td>
+                        <td class="pos-empty">—</td>
+                        <td class="syn-text">Arrange, Plan</td>
+                        <td class="ant-text">Mess up</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Patriotic</td>
+                        <td class="bn-meaning">দেশপ্রেমিক</td>
+                        <td class="pos-cell">Patriotism</td>
+                        <td class="pos-empty">—</td>
+                        <td class="pos-cell">Patriotic</td>
+                        <td class="pos-cell">Patriotically</td>
+                        <td class="syn-text">Loyal</td>
+                        <td class="ant-text">Traitorous</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Political</td>
+                        <td class="bn-meaning">রাজনৈতিক</td>
+                        <td class="pos-cell">Politics</td>
+                        <td class="pos-cell">Politicize</td>
+                        <td class="pos-cell">Political</td>
+                        <td class="pos-cell">Politically</td>
+                        <td class="syn-text">Civic, Public</td>
+                        <td class="ant-text">Apolitical</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Recall</td>
+                        <td class="bn-meaning">স্মরণ করা</td>
+                        <td class="pos-cell">Recall</td>
+                        <td class="pos-cell">Recall</td>
+                        <td class="pos-cell">Recallable</td>
+                        <td class="pos-empty">—</td>
+                        <td class="syn-text">Remember</td>
+                        <td class="ant-text">Forget</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Recite</td>
+                        <td class="bn-meaning">আবৃত্তি করা</td>
+                        <td class="pos-cell">Recitation</td>
+                        <td class="pos-cell">Recite</td>
+                        <td class="pos-empty">—</td>
+                        <td class="pos-empty">—</td>
+                        <td class="syn-text">Quote, Chant</td>
+                        <td class="pos-empty">—</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Remarkable</td>
+                        <td class="bn-meaning">উল্লেখযোগ্য</td>
+                        <td class="pos-cell">Remark</td>
+                        <td class="pos-cell">Remark</td>
+                        <td class="pos-cell">Remarkable</td>
+                        <td class="pos-cell">Remarkably</td>
+                        <td class="syn-text">Notable, Special</td>
+                        <td class="ant-text">Ordinary</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Sacrifice</td>
+                        <td class="bn-meaning">আত্মত্যাগ</td>
+                        <td class="pos-cell">Sacrifice</td>
+                        <td class="pos-cell">Sacrifice</td>
+                        <td class="pos-cell">Sacrificial</td>
+                        <td class="pos-empty">—</td>
+                        <td class="syn-text">Dedication</td>
+                        <td class="ant-text">Greed, Gain</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Significance</td>
+                        <td class="bn-meaning">গুরুত্ব</td>
+                        <td class="pos-cell">Significance</td>
+                        <td class="pos-cell">Signify</td>
+                        <td class="pos-cell">Significant</td>
+                        <td class="pos-cell">Significantly</td>
+                        <td class="syn-text">Importance</td>
+                        <td class="ant-text">Unimportance</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Situated</td>
+                        <td class="bn-meaning">অবস্থিত</td>
+                        <td class="pos-cell">Situation</td>
+                        <td class="pos-cell">Situate</td>
+                        <td class="pos-cell">Situated</td>
+                        <td class="pos-empty">—</td>
+                        <td class="syn-text">Located</td>
+                        <td class="pos-empty">—</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Soldier</td>
+                        <td class="bn-meaning">সৈনিক</td>
+                        <td class="pos-cell">Soldier</td>
+                        <td class="pos-cell">Soldier</td>
+                        <td class="pos-cell">Soldierly</td>
+                        <td class="pos-empty">—</td>
+                        <td class="syn-text">Warrior</td>
+                        <td class="ant-text">Coward</td>
+                    </tr>
+                    <tr>
+                        <td class="word-main">Source</td>
+                        <td class="bn-meaning">উৎস</td>
+                        <td class="pos-cell">Source</td>
+                        <td class="pos-cell">Source</td>
+                        <td class="pos-empty">—</td>
+                        <td class="pos-empty">—</td>
+                        <td class="syn-text">Origin, Root</td>
+                        <td class="ant-text">End, Result</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <footer style="margin-top: 30px; text-align: center; color: #64748b; font-size: 0.85rem;">
+        &copy; 2026 Educational Study Materials - Lesson 13 Series
+    </footer>
+</div>
+
+</body>
+</html>

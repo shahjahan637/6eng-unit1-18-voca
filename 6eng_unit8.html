@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 8 Vocabulary Mastery - Proking</title>
+    <style>
+        :root {
+            --primary: #f97316; /* Orange */
+            --secondary: #fb923c;
+            --bg: #0a0a0a;
+            --card-bg: rgba(23, 23, 23, 0.9);
+            --text: #f5f5f5;
+            --accent: #22d3ee;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(249, 115, 22, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(34, 211, 238, 0.1) 0%, transparent 40%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Study Section */
+        .study-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 24px;
+            padding: 30px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .study-container h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .sentence-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .sentence-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .sentence-item {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            font-size: 14.5px;
+            transition: 0.3s;
+        }
+
+        .sentence-item:hover { background: rgba(249, 115, 22, 0.1); }
+        .word-h { color: var(--accent); font-weight: bold; }
+
+        /* Quiz Section */
+        #quiz-wrapper {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .status-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 600; color: #a3a3a3; }
+        .progress-bar { height: 8px; background: #262626; border-radius: 4px; margin-bottom: 35px; overflow: hidden; }
+        #progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); width: 0%; transition: 0.5s; }
+
+        .q-text { font-size: 22px; margin-bottom: 30px; line-height: 1.5; color: #fff; }
+        .options-list { display: flex; flex-direction: column; gap: 15px; }
+
+        .opt-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            border-radius: 16px;
+            color: #d4d4d4;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .opt-btn:hover:not([disabled]) {
+            background: rgba(249, 115, 22, 0.2);
+            border-color: var(--primary);
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .correct { background: #15803d !important; border-color: #22c55e !important; color: white; }
+        .wrong { background: #991b1b !important; border-color: #ef4444 !important; color: white; }
+
+        #result-area { text-align: center; display: none; }
+        .final-score { font-size: 64px; font-weight: 900; color: var(--primary); margin: 20px 0; }
+        .btn-restart { background: var(--primary); color: white; border: none; padding: 16px 45px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .btn-restart:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 0 20px var(--accent); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="study-container">
+    <h2>Lesson 8: Vocabulary List</h2>
+    <div class="sentence-grid" id="sentence-box"></div>
+</div>
+
+<div id="quiz-wrapper">
+    <div id="quiz-active">
+        <div class="status-row">
+            <span id="q-label">Step 1 of 12</span>
+            <span id="score-label">Points: 0</span>
+        </div>
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        
+        <div id="content-area">
+            <div class="q-text" id="q-body">Loading Question...</div>
+            <div class="options-list" id="opt-container"></div>
+        </div>
+    </div>
+
+    <div id="result-area">
+        <h1 style="color: var(--accent)">Quiz Complete!</h1>
+        <p>Excellent effort, Proking. Your Lesson 8 score is:</p>
+        <div class="final-score" id="final-val">0</div>
+        <p id="rank-text" style="margin-bottom: 30px; font-style: italic; color: #d4d4d4;"></p>
+        <button class="btn-restart" onclick="location.reload()">Start New Session</button>
+    </div>
+</div>
+
+<script>
+    const vocabularyData = [
+        "Altogether: Altogether there are twenty students in the class. (সবমিলিয়ে ক্লাসে ২০ জন ছাত্র আছে।)",
+        "Available: Fresh vegetables are available in this market. (এই বাজারে তাজা শাকসবজি পাওয়া যায়।)",
+        "Bean: I like to eat green beans. (আমি সবুজ শিম খেতে পছন্দ করি।)",
+        "Carrot: Carrots are good for our eyes. (গাজর আমাদের চোখের জন্য ভালো।)",
+        "Cauliflower: My mother cooked a delicious cauliflower curry. (আমার মা একটি সুস্বাদু ফুলকপির তরকারি রান্না করেছেন।)",
+        "Change: The shopkeeper gave me the change. (দোকানদার আমাকে ভাঙতি টাকা দিলেন।)",
+        "Cucumber: We need some cucumbers for the salad. (সালাদের জন্য আমাদের কিছু শসা প্রয়োজন।)",
+        "Dinner: We usually have dinner at 9 PM. (আমরা সাধারণত রাত ৯টায় নৈশভোজ করি।)",
+        "Discuss: Let's discuss our new project. (চলো আমাদের নতুন প্রকল্পটি নিয়ে আলোচনা করি।)",
+        "Eggplant: Eggplant is a popular vegetable in winter. (বেগুন শীতকালের একটি জনপ্রিয় সবজি।)",
+        "Enough: I have enough time to finish the work. (কাজটি শেষ করার জন্য আমার কাছে পর্যাপ্ত সময় আছে।)",
+        "Forget: Don't forget to bring your umbrella. (তোমার ছাতা আনতে ভুলে যেও না।)",
+        "Grocery: I went to the grocery store to buy oil. (আমি তেল কিনতে মুদি দোকানে গিয়েছিলাম।)",
+        "Imaginary: The story is based on an imaginary character. (গল্পটি একটি কাল্পনিক চরিত্রের ওপর ভিত্তি করে তৈরি।)",
+        "Local: We should support our local farmers. (আমাদের স্থানীয় কৃষকদের সহায়তা করা উচিত।)",
+        "Necessary: Water is necessary for all living beings. (সকল জীবন্ত প্রাণীর জন্য পানি প্রয়োজনীয়।)",
+        "Quantity: We bought a large quantity of rice. (আমরা প্রচুর পরিমাণে চাল কিনলাম।)",
+        "Reason: What is the reason for your delay? (তোমার দেরির কারণ কী?)",
+        "Tonight: I am going to a party tonight. (আমি আজ রাতে একটি পার্টিতে যাচ্ছি।)",
+        "Visit: My grandparents will visit us next week. (আমার দাদা-দাদি আগামী সপ্তাহে আমাদের এখানে বেড়াতে আসবেন।)"
+    ];
+
+    const lesson8Questions = [
+        { q: "What is the synonym of 'Enough'?", a: "Sufficient", o: ["Inadequate", "Sufficient", "Less", "Rare"] },
+        { q: "'Imaginary' এর বিপরীত শব্দ (Antonym) কোনটি?", a: "Factual", o: ["Unreal", "Fictional", "Factual", "Made-up"] },
+        { q: "Where do we go to buy oil and salt?", a: "Grocery store", o: ["Library", "Park", "Grocery store", "Station"] },
+        { q: "Synonym of 'Available' is:", a: "Accessible", o: ["Rare", "Accessible", "Limited", "Closed"] },
+        { q: "What is the Noun form of 'Discuss'?", a: "Discussion", o: ["Discussed", "Discussing", "Discussion", "Discussable"] },
+        { q: "Fill in the blank: 'Carrots are good for our ____.'", a: "eyes", o: ["ears", "eyes", "teeth", "hair"] },
+        { q: "Antonym of 'Forget' is:", a: "Remember", o: ["Omit", "Miss", "Remember", "Lose"] },
+        { q: "Which word means 'সবমিলিয়ে'?", a: "Altogether", o: ["Partially", "Separately", "Altogether", "Partly"] },
+        { q: "What is the synonym of 'Reason'?", a: "Motive", o: ["Result", "Effect", "Motive", "End"] },
+        { q: "Which vegetable is also called 'Aubergine'?", a: "Eggplant", o: ["Carrot", "Bean", "Eggplant", "Cauliflower"] },
+        { q: "Antonym of 'Local' is:", a: "International", o: ["Native", "Regional", "International", "Neighboring"] },
+        { q: "What is the synonym of 'Necessary'?", a: "Essential", o: ["Optional", "Extra", "Unneeded", "Essential"] }
+    ];
+
+    // Build Study Grid
+    const grid = document.getElementById('sentence-box');
+    vocabularyData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'sentence-item';
+        const parts = item.split(':');
+        div.innerHTML = `<span class="word-h">${parts[0]}:</span>${parts[1]}`;
+        grid.appendChild(div);
+    });
+
+    let qIdx = 0;
+    let score = 0;
+
+    function renderQ() {
+        const data = lesson8Questions[qIdx];
+        document.getElementById('q-body').innerText = data.q;
+        document.getElementById('q-label').innerText = `Step ${qIdx + 1} of ${lesson8Questions.length}`;
+        document.getElementById('progress-fill').style.width = `${((qIdx + 1) / lesson8Questions.length) * 100}%`;
+        
+        const container = document.getElementById('opt-container');
+        container.innerHTML = '';
+        data.o.forEach(option => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = option;
+            btn.onclick = () => handleAnswer(option, btn);
+            container.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(selected, btn) {
+        const correct = lesson8Questions[qIdx].a;
+        const btns = document.querySelectorAll('.opt-btn');
+        btns.forEach(b => b.disabled = true);
+
+        if (selected === correct) {
+            score += 10;
+            btn.classList.add('correct');
+        } else {
+            score -= 2;
+            btn.classList.add('wrong');
+            btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+        document.getElementById('score-label').innerText = `Points: ${score}`;
+
+        setTimeout(() => {
+            qIdx++;
+            if (qIdx < lesson8Questions.length) renderQ();
+            else showResult();
+        }, 1200);
+    }
+
+    function showResult() {
+        document.getElementById('quiz-active').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('final-val').innerText = score;
+        
+        let feedback = "";
+        if(score >= 100) feedback = "You are a Vocabulary Legend, Proking! 🏆";
+        else if(score >= 70) feedback = "Great job! Your grasp of Lesson 8 is strong. 🌟";
+        else feedback = "Good effort! Practice more to perfect these words.";
+        
+        document.getElementById('rank-text').innerText = feedback;
+    }
+
+    renderQ();
+</script>
+</body>
+</html>

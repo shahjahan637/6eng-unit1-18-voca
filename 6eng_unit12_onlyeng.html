@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary Dashboard | Lesson 12</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --text: #1e293b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
+        }
+
+        header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 1px; }
+        header p { margin: 10px 0 0; opacity: 0.9; font-weight: 300; }
+
+        .card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--primary);
+            border-left: 5px solid var(--accent);
+            padding-left: 15px;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        /* Sentences Grid */
+        .sentence-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .sentence-item {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid var(--secondary);
+            transition: transform 0.2s;
+        }
+
+        .sentence-item:hover {
+            transform: translateY(-3px);
+            background: #e2e8f0;
+        }
+
+        .num { font-weight: bold; color: var(--primary); margin-right: 5px; }
+        .word-highlight { font-weight: 600; color: var(--secondary); }
+
+        /* Vocabulary Table */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            text-align: left;
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        tr:nth-child(even) { background-color: #fcfcfc; }
+        tr:hover { background-color: #f0f9ff; }
+
+        .pos-tag {
+            font-size: 0.8rem;
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .synonym { color: var(--accent); font-weight: 500; }
+        .antonym { color: #ef4444; font-weight: 500; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .container { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Lesson 12: Vocabulary Master</h1>
+        <p>Explore, Learn, and Master New Words</p>
+    </header>
+
+    <div class="card">
+        <h2>১. প্রতিটি মূল শব্দ দিয়ে সহজ বাক্য (Examples)</h2>
+        <div class="sentence-list">
+            <div class="sentence-item"><span class="num">১.</span> <span class="word-highlight">Abandoned:</span> There is an abandoned house at the end of the street.</div>
+            <div class="sentence-item"><span class="num">২.</span> <span class="word-highlight">Activities:</span> We take part in various school activities.</div>
+            <div class="sentence-item"><span class="num">৩.</span> <span class="word-highlight">Against:</span> He was leaning against the wall.</div>
+            <div class="sentence-item"><span class="num">৪.</span> <span class="word-highlight">Alluring:</span> The beauty of the hills is very alluring.</div>
+            <div class="sentence-item"><span class="num">৫.</span> <span class="word-highlight">Amazing:</span> The sunset was an amazing sight.</div>
+            <div class="sentence-item"><span class="num">৬.</span> <span class="word-highlight">Attraction:</span> Birisiri is a great tourist attraction.</div>
+            <div class="sentence-item"><span class="num">৭.</span> <span class="word-highlight">Bank:</span> They sat on the bank of the river Someshwari.</div>
+            <div class="sentence-item"><span class="num">৮.</span> <span class="word-highlight">Ceramic:</span> Bijoypur is famous for its ceramic soil.</div>
+            <div class="sentence-item"><span class="num">৯.</span> <span class="word-highlight">Charming:</span> The scenery of the countryside is very charming.</div>
+            <div class="sentence-item"><span class="num">১০.</span> <span class="word-highlight">Coal:</span> There is a coal mine in this region.</div>
+            <div class="sentence-item"><span class="num">১১.</span> <span class="word-highlight">Countryside:</span> I love to spend my holidays in the countryside.</div>
+            <div class="sentence-item"><span class="num">১২.</span> <span class="word-highlight">Crystal clear:</span> The water of the lake is crystal clear.</div>
+            <div class="sentence-item"><span class="num">১৩.</span> <span class="word-highlight">Cultural:</span> We should respect our cultural heritage.</div>
+            <div class="sentence-item"><span class="num">১৪.</span> <span class="word-highlight">Culture:</span> Bangladesh has a rich and diverse culture.</div>
+            <div class="sentence-item"><span class="num">১৫.</span> <span class="word-highlight">Destination:</span> Susang Durgapur is our next travel destination.</div>
+        </div>
+        <p style="text-align:center; color: #64748b; font-style: italic; margin-top: 20px;">... এবং আরও অনেক বাক্য নিচে টেবিলে অন্তর্ভুক্ত করা হয়েছে।</p>
+    </div>
+
+    <div class="card">
+        <h2>২. শব্দ বিশ্লেষণ (Word Analysis Table)</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Word (মূল শব্দ)</th>
+                        <th>Parts of Speech</th>
+                        <th>Meaning (অর্থ)</th>
+                        <th>Synonyms</th>
+                        <th>Antonyms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Abandoned</strong></td>
+                        <td><span class="pos-tag">Adj / Verb</span></td>
+                        <td>পরিত্যক্ত</td>
+                        <td class="synonym">deserted, forsaken</td>
+                        <td class="antonym">occupied, inhabited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activities</strong></td>
+                        <td><span class="pos-tag">Noun / Adj</span></td>
+                        <td>কর্মকাণ্ড</td>
+                        <td class="synonym">works, tasks</td>
+                        <td class="antonym">idleness</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alluring</strong></td>
+                        <td><span class="pos-tag">Adj / Verb</span></td>
+                        <td>আকর্ষণীয়</td>
+                        <td class="synonym">tempting, charming</td>
+                        <td class="antonym">repulsive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Amazing</strong></td>
+                        <td><span class="pos-tag">Adj / Verb</span></td>
+                        <td>অসাধারণ</td>
+                        <td class="synonym">wonderful, incredible</td>
+                        <td class="antonym">boring</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Destination</strong></td>
+                        <td><span class="pos-tag">Noun</span></td>
+                        <td>গন্তব্য</td>
+                        <td class="synonym">goal, target</td>
+                        <td class="antonym">start, beginning</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Glory</strong></td>
+                        <td><span class="pos-tag">Noun / Adj</span></td>
+                        <td>মহিমা/গৌরব</td>
+                        <td class="synonym">magnificence, pride</td>
+                        <td class="antonym">shame</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quiet</strong></td>
+                        <td><span class="pos-tag">Adj / Noun</span></td>
+                        <td>শান্ত/নিরিবিলি</td>
+                        <td class="synonym">calm, peaceful</td>
+                        <td class="antonym">noisy, loud</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unfold</strong></td>
+                        <td><span class="pos-tag">Verb</span></td>
+                        <td>উন্মোচিত করা</td>
+                        <td class="synonym">reveal, expose</td>
+                        <td class="antonym">hide, cover</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unlimited</strong></td>
+                        <td><span class="pos-tag">Adj / Noun</span></td>
+                        <td>অসীম/অফুরন্ত</td>
+                        <td class="synonym">endless, infinite</td>
+                        <td class="antonym">limited</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

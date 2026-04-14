@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary List - Advanced Layout</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Hind Siliguri';
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .vocab-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        th {
+            background-color: var(--accent-color);
+            color: white;
+            text-align: left;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+            transition: 0.3s;
+        }
+
+        .word-eng {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+        .word-bn {
+            color: #555;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container { padding: 15px; }
+            th, td { padding: 10px; font-size: 0.9rem; }
+            .section-title { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Advanced Vocabulary Dashboard</h2>
+
+    <div class="vocab-section">
+        <div class="section-title">Core Comparisons (প্রাথমিক শব্দ তালিকা)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>English Word</th>
+                    <th>Bengali Meaning</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="word-eng">Shed / Shade</td><td class="word-bn">ছাউনি / ছায়া</td></tr>
+                <tr><td class="word-eng">Pepper / Paper</td><td class="word-bn">মরিচ / কাগজ</td></tr>
+                <tr><td class="word-eng">Test / Taste</td><td class="word-bn">পরীক্ষা / স্বাদ</td></tr>
+                <tr><td class="word-eng">Wet / Wait</td><td class="word-bn">ভেজা / অপেক্ষা করা</td></tr>
+                <tr><td class="word-eng">Pen / Pain</td><td class="word-bn">কলম / ব্যথা, যন্ত্রণা</td></tr>
+                <tr><td class="word-eng">Man / Mane</td><td class="word-bn">মানুষ / কেশ</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="vocab-section">
+        <div class="section-title">Confusing Pairs (উচ্চারণ ও বানানে সাদৃশ্যপূর্ণ শব্দ)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Set A (English)</th>
+                    <th>Bengali</th>
+                    <th>Set B (English)</th>
+                    <th>Bengali</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="word-eng">Sell</td><td>বিক্রি করা</td><td class="word-eng">Shell</td><td>খোসা / শামুক</td></tr>
+                <tr><td class="word-eng">Ship</td><td>জাহাজ</td><td class="word-eng">Sheep</td><td>ভেড়া</td></tr>
+                <tr><td class="word-eng">Sit</td><td>বসা</td><td class="word-eng">Seat</td><td>আসন</td></tr>
+                <tr><td class="word-eng">Live</td><td>বাস করা</td><td class="word-eng">Leave</td><td>ত্যাগ করা</td></tr>
+                <tr><td class="word-eng">Sleep</td><td>ঘুমানো</td><td class="word-eng">Slip</td><td>পিছলে যাওয়া</td></tr>
+                <tr><td class="word-eng">Full</td><td>পূর্ণ / ভরা</td><td class="word-eng">Fool</td><td>বোকা</td></tr>
+                <tr><td class="word-eng">Sun</td><td>সূর্য</td><td class="word-eng">Son</td><td>পুত্র</td></tr>
+                <tr><td class="word-eng">Meat</td><td>মাংস</td><td class="word-eng">Meet</td><td>সাক্ষাৎ করা</td></tr>
+                <tr><td class="word-eng">Weak</td><td>দুর্বল</td><td class="word-eng">Week</td><td>সপ্তাহ</td></tr>
+                <tr><td class="word-eng">Right</td><td>সঠিক / ডান</td><td class="word-eng">Write</td><td>লেখা</td></tr>
+                <tr><td class="word-eng">Wait</td><td>অপেক্ষা করা</td><td class="word-eng">Weight</td><td>ওজন</td></tr>
+                <tr><td class="word-eng">Brake</td><td>ব্রেক</td><td class="word-eng">Break</td><td>ভাঙা</td></tr>
+                <tr><td class="word-eng">Diary</td><td>দিনলিপি</td><td class="word-eng">Dairy</td><td>দুগ্ধ খামার</td></tr>
+                <tr><td class="word-eng">Tail</td><td>লেজ</td><td class="word-eng">Tale</td><td>গল্প</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

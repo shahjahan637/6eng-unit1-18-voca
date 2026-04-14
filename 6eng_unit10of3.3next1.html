@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 10 Ultra Pro Quiz - Proking</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #38bdf8;
+            --text: #f1f5f9;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Smart Scrolling Dashboard */
+        .marquee-container {
+            width: 100%;
+            background: #1e293b;
+            border-bottom: 2px solid var(--accent);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .marquee-content {
+            display: flex;
+            white-space: nowrap;
+            animation: scroll 120s linear infinite;
+        }
+
+        .marquee-content span {
+            padding: 0 40px;
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            width: 90%;
+            max-width: 700px;
+            background: var(--card);
+            margin-top: 40px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .header h1 { color: var(--accent); font-size: 24px; margin-bottom: 5px; }
+        .progress-bar {
+            width: 100%; height: 8px; background: #334155;
+            border-radius: 10px; margin: 20px 0; overflow: hidden;
+        }
+        #progress { width: 0%; height: 100%; background: var(--accent); transition: 0.3s; }
+
+        .question { font-size: 18px; margin-bottom: 25px; line-height: 1.5; }
+        .options { display: grid; gap: 12px; }
+
+        .option-btn {
+            background: #334155; border: 2px solid transparent;
+            color: white; padding: 15px; border-radius: 12px;
+            cursor: pointer; font-size: 16px; transition: 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover { background: #475569; border-color: var(--accent); }
+        .correct { background: var(--success) !important; color: white; }
+        .wrong { background: var(--error) !important; color: white; }
+
+        #result-screen { display: none; }
+        .final-score { font-size: 48px; font-weight: bold; color: var(--accent); }
+        .retry-btn {
+            margin-top: 20px; padding: 12px 30px; background: var(--accent);
+            border: none; border-radius: 8px; color: #000; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+        .retry-btn:hover { transform: scale(1.05); background: white; }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <div class="marquee-content" id="marquee-data">
+            </div>
+    </div>
+
+    <div class="quiz-container">
+        <div id="quiz-ui">
+            <div class="header">
+                <h1>Lesson 10 Master Quiz</h1>
+                <p id="q-count">Question 1/20</p>
+            </div>
+            <div class="progress-bar"><div id="progress"></div></div>
+            <div class="question" id="q-text">Loading question...</div>
+            <div class="options" id="options-box"></div>
+        </div>
+
+        <div id="result-screen">
+            <h1>Quiz Complete!</h1>
+            <p>Proking, your final score is:</p>
+            <div class="final-score" id="final-score">0</div>
+            <p id="feedback"></p>
+            <button class="retry-btn" onclick="location.reload()">Restart Challenge</button>
+        </div>
+    </div>
+
+<script>
+    const lessonData = [
+        "Add: Please add some sugar to my tea. (যোগ করা)", "Affected: Many people were affected by the flood. (আক্রান্ত)",
+        "Against: We should stand against injustice. (বিরুদ্ধে)", "Aloevera: Aloevera is very good for the skin. (ঘৃতকুমারী)",
+        "Ancient: We visited an ancient temple yesterday. (প্রাচীন)", "Apply: You should apply this cream twice a day. (প্রয়োগ করা)",
+        "Attitude: He has a very positive attitude. (মনোভাব)", "Basil: Basil leaves help to cure a cold. (তুলসী)",
+        "Burn: He got a minor burn on his hand. (পোড়া ক্ষত)", "Civilisation: The Indus Valley civilisation was very advanced. (সভ্যতা)",
+        "Common: Fever is a common illness in winter. (সাধারণ)", "Cure: Doctors try their best to cure patients. (নিরাময় করা)",
+        "Decay: Sugar can cause tooth decay. (ক্ষয়)", "Effective: This medicine is very effective for pain. (কার্যকর)",
+        "Experience: She has five years of teaching experience. (অভিজ্ঞতা)", "Garlic: Garlic is used in many dishes. (রসুন)",
+        "Grown-up: You should listen to grown-up people. (মুরুব্বী)", "Heal: Time will heal all wounds. (সুস্থ করা)",
+        "Herb: My grandmother knows about many herbs. (ভেষজ)", "Herbal: I prefer herbal tea over coffee. (ভেষজ)",
+        "Increase: We need to increase our production. (বাড়ানো)", "Injury: He recovered quickly from his injury. (আঘাত)",
+        "Mildly: He spoke mildly to the child. (মৃদুভাবে)", "Minor: It was just a minor accident. (ছোট/সামান্য)",
+        "Natural: Honey is a natural sweetener. (প্রাকৃতিক)", "Ointment: Put some ointment on the cut. (মলম)",
+        "Pinch: Add a pinch of salt to the soup. (চিমটি)", "Prescribe: The doctor will prescribe some medicine. (ব্যবস্থাপত্র দেওয়া)",
+        "Protect: We must protect our forest. (রক্ষা করা)", "Relief: This spray gives quick relief from pain. (আরাম/মুক্তি)",
+        "Remedy: Tulsi is a great remedy for cough. (প্রতিকার)", "Resistance: Vitamin C builds resistance against disease. (প্রতিরোধ)",
+        "Rural: Life in rural areas is very peaceful. (গ্রাম্য)", "Side effect: This medicine has no side effect. (পার্শ্ব প্রতিক্রিয়া)",
+        "Suck: Children like to suck on lollipops. (চোষা)", "Treatment: He is undergoing medical treatment. (চিকিৎসা)",
+        "Turmeric: Turmeric is known for its antiseptic properties. (হলুদ)", "Turn: Turn left at the next corner. (ঘোরা)",
+        "Wound: The wound is healing slowly. (জখম/ক্ষত)"
+    ];
+
+    const mcqPool = [
+        { q: "What is the synonym of 'Ancient'?", a: "Antique", o: ["Modern", "Antique", "New", "Current"] },
+        { q: "'Rural' শব্দটির বাংলা অর্থ কোনটি?", a: "গ্রাম্য", o: ["শহর", "বিদেশ", "গ্রাম্য", "প্রাচীন"] },
+        { q: "What is the antonym of 'Add'?", a: "Subtract", o: ["Join", "Subtract", "Include", "Attach"] },
+        { q: "What is the synonym of 'Cure'?", a: "Heal", o: ["Harm", "Hurt", "Heal", "Damage"] },
+        { q: "Which one is a medicinal plant?", a: "Aloevera", o: ["Iron", "Stone", "Aloevera", "Glass"] },
+        { q: "What is the antonym of 'Common'?", a: "Rare", o: ["Regular", "Rare", "General", "Usual"] },
+        { q: "Synonym of 'Effective' is:", a: "Useful", o: ["Useless", "Ineffective", "Useful", "Weak"] },
+        { q: "Meaning of 'Injury' is:", a: "আঘাত", o: ["শান্তি", "আঘাত", "খুশি", "নিরাময়"] },
+        { q: "Antonym of 'Protect' is:", a: "Endanger", o: ["Save", "Guard", "Defend", "Endanger"] },
+        { q: "Synonym of 'Relief' is:", a: "Comfort", o: ["Pain", "Agony", "Stress", "Comfort"] },
+        { q: "Antonym of 'Minor' is:", a: "Major", o: ["Small", "Little", "Major", "Slight"] },
+        { q: "'Civilisation' means:", a: "সভ্যতা", o: ["যুদ্ধ", "সভ্যতা", "অসভ্য", "ব্যায়াম"] },
+        { q: "Parts of speech of 'Regularly' is:", a: "Adverb", o: ["Noun", "Verb", "Adverb", "Adjective"] },
+        { q: "Synonym of 'Experience' is:", a: "Knowledge", o: ["Ignorance", "Knowledge", "Newness", "Fear"] },
+        { q: "Meaning of 'Decay' is:", a: "ক্ষয়", o: ["বৃদ্ধি", "ক্ষয়", "আরাম", "ভেষজ"] },
+        { q: "Antonym of 'Natural' is:", a: "Artificial", o: ["Normal", "Organic", "Artificial", "Usual"] },
+        { q: "Meaning of 'Pinch' is:", a: "চিমটি", o: ["মুষ্টি", "চিমটি", "বালতি", "চামচ"] },
+        { q: "Synonym of 'Remedy' is:", a: "Treatment", o: ["Disease", "Treatment", "Pain", "Illness"] },
+        { q: "Antonym of 'Increase' is:", a: "Decrease", o: ["Boost", "Enlarge", "Decrease", "Heighten"] },
+        { q: "What is 'Turmeric'?", a: "Yellow spice", o: ["Fruit", "Vehicle", "Yellow spice", "Liquid"] }
+    ];
+
+    // Inject Marquee Data
+    const marquee = document.getElementById('marquee-data');
+    lessonData.forEach(text => {
+        const span = document.createElement('span');
+        span.innerText = text;
+        marquee.appendChild(span);
+    });
+
+    let currentQ = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const qData = mcqPool[currentQ];
+        document.getElementById('q-count').innerText = `Question ${currentQ + 1}/${mcqPool.length}`;
+        document.getElementById('progress').style.width = `${((currentQ + 1) / mcqPool.length) * 100}%`;
+        document.getElementById('q-text').innerText = qData.q;
+        
+        const optionsBox = document.getElementById('options-box');
+        optionsBox.innerHTML = '';
+        
+        qData.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(opt, btn);
+            optionsBox.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, btn) {
+        const correct = mcqPool[currentQ].a;
+        const allBtns = document.querySelectorAll('.option-btn');
+        
+        allBtns.forEach(b => b.disabled = true);
+
+        if(selected === correct) {
+            score++;
+            btn.classList.add('correct');
+        } else {
+            btn.classList.add('wrong');
+            allBtns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+
+        setTimeout(() => {
+            currentQ++;
+            if(currentQ < mcqPool.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }, 1500);
+    }
+
+    function showResult() {
+        document.getElementById('quiz-ui').style.display = 'none';
+        const resultScreen = document.getElementById('result-screen');
+        resultScreen.style.display = 'block';
+        document.getElementById('final-score').innerText = `${score}/${mcqPool.length}`;
+        
+        let feedback = score > 15 ? "Excellent! You are a Proking Master! 🏆" : "Good job! Keep practicing. 📚";
+        document.getElementById('feedback').innerText = feedback;
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

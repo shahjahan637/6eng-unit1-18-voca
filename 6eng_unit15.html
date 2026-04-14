@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 15 | Vocabulary & Grammar Pro Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --danger: #f43f5e;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        header h1 { margin: 0; font-size: 2.5rem; font-weight: 800; }
+        header p { margin: 10px 0 0; opacity: 0.9; font-weight: 300; }
+
+        .container {
+            max-width: 1200px;
+            margin: -30px auto 50px;
+            padding: 0 20px;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            border-left: 5px solid var(--accent);
+            padding-left: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* Responsive Table */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            padding: 15px;
+            text-align: left;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #64748b;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
+        }
+
+        tr:hover { background-color: #f0f9ff; }
+
+        .word-root { font-weight: 700; color: var(--primary); }
+        .pos-badge { font-family: monospace; font-size: 0.85rem; color: #475569; background: #e2e8f0; padding: 2px 6px; border-radius: 4px; }
+        .syn { color: var(--accent); font-weight: 600; }
+        .ant { color: var(--danger); font-weight: 600; }
+
+        /* Sentence Grid */
+        .sentence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .sentence-item {
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 15px;
+            border-top: 4px solid var(--secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .sentence-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .eng-text { display: block; font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 1.05rem; }
+        .bn-text { display: block; color: #4b5563; font-style: italic; font-size: 0.95rem; border-top: 1px solid #f1f5f9; padding-top: 8px; }
+
+        .num-badge { background: var(--secondary); color: white; padding: 2px 8px; border-radius: 50%; font-size: 0.8rem; margin-right: 8px; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .container { padding: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Lesson 15: Academic Lexicon</h1>
+    <p>Word Transformations, Synonyms, and Sentence Mastery</p>
+</header>
+
+<div class="container">
+    <div class="section-card">
+        <h2>📊 Word Transformation Matrix</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Root Word</th>
+                        <th>Noun</th>
+                        <th>Verb</th>
+                        <th>Adj.</th>
+                        <th>Adv.</th>
+                        <th>Synonyms</th>
+                        <th>Antonyms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="word-root">Ago</td><td>—</td><td>—</td><td>—</td><td class="pos-badge">Ago</td><td class="syn">Earlier, Before</td><td class="ant">Later, After</td></tr>
+                    <tr><td class="word-root">Alone</td><td class="pos-badge">Loneliness</td><td>—</td><td class="pos-badge">Alone</td><td class="pos-badge">Alone</td><td class="syn">Singly, Solo</td><td class="ant">Together</td></tr>
+                    <tr><td class="word-root">Already</td><td>—</td><td>—</td><td>—</td><td class="pos-badge">Already</td><td class="syn">Beforehand</td><td class="ant">Not yet</td></tr>
+                    <tr><td class="word-root">Colleague</td><td class="pos-badge">Colleague</td><td>—</td><td>—</td><td>—</td><td class="syn">Coworker</td><td class="ant">Rival, Enemy</td></tr>
+                    <tr><td class="word-root">Elderly</td><td class="pos-badge">Elder</td><td>—</td><td class="pos-badge">Elderly</td><td>—</td><td class="syn">Aged, Senior</td><td class="ant">Young, Junior</td></tr>
+                    <tr><td class="word-root">Establish</td><td class="pos-badge">Establishment</td><td class="pos-badge">Establish</td><td class="pos-badge">Established</td><td>—</td><td class="syn">Found, Setup</td><td class="ant">Destroy, Ruin</td></tr>
+                    <tr><td class="word-root">Fond of</td><td class="pos-badge">Fondness</td><td>—</td><td class="pos-badge">Fond</td><td class="pos-badge">Fondly</td><td class="syn">Attached, Keen</td><td class="ant">Hostile, Averse</td></tr>
+                    <tr><td class="word-root">Ghost</td><td class="pos-badge">Ghost</td><td class="pos-badge">Ghost</td><td class="pos-badge">Ghostly</td><td>—</td><td class="syn">Spirit, Phantom</td><td class="ant">Reality, Human</td></tr>
+                    <tr><td class="word-root">Helpless</td><td class="pos-badge">Helplessness</td><td>—</td><td class="pos-badge">Helpless</td><td class="pos-badge">Helplessly</td><td class="syn">Powerless, Weak</td><td class="ant">Capable, Able</td></tr>
+                    <tr><td class="word-root">Locality</td><td class="pos-badge">Locality</td><td class="pos-badge">Localize</td><td class="pos-badge">Local</td><td class="pos-badge">Locally</td><td class="syn">Area, District</td><td class="ant">Whole, World</td></tr>
+                    <tr><td class="word-root">Meaningful</td><td class="pos-badge">Meaning</td><td class="pos-badge">Mean</td><td class="pos-badge">Meaningful</td><td class="pos-badge">Meaningfully</td><td class="syn">Significant</td><td class="ant">Vague, Vain</td></tr>
+                    <tr><td class="word-root">Miserable</td><td class="pos-badge">Misery</td><td>—</td><td class="pos-badge">Miserable</td><td class="pos-badge">Miserably</td><td class="syn">Sorrowful, Sad</td><td class="ant">Happy, Joyful</td></tr>
+                    <tr><td class="word-root">Often</td><td>—</td><td>—</td><td>—</td><td class="pos-badge">Often</td><td class="syn">Frequently</td><td class="ant">Rarely, Seldom</td></tr>
+                    <tr><td class="word-root">Retired</td><td class="pos-badge">Retirement</td><td class="pos-badge">Retire</td><td class="pos-badge">Retired</td><td>—</td><td class="syn">Pensioned</td><td class="ant">Active, Working</td></tr>
+                    <tr><td class="word-root">Support</td><td class="pos-badge">Support</td><td class="pos-badge">Support</td><td class="pos-badge">Supportive</td><td>—</td><td class="syn">Help, Assist</td><td class="ant">Oppose, Harm</td></tr>
+                    <tr><td class="word-root">Take care</td><td class="pos-badge">Care</td><td class="pos-badge">Take care</td><td class="pos-badge">Careful</td><td class="pos-badge">Carefully</td><td class="syn">Look after</td><td class="ant">Neglect, Harm</td></tr>
+                    <tr><td class="word-root">Widow</td><td class="pos-badge">Widow</td><td>—</td><td class="pos-badge">Widowed</td><td>—</td><td class="syn">Bereaved</td><td class="ant">Married, Wife</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>📖 Sentences with Context (অনুবাদসহ বাক্য)</h2>
+        <div class="sentence-grid">
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">1</span> Ago: I visited Dhaka two years ago.</span><span class="bn-text">আমি দুই বছর আগে ঢাকা গিয়েছিলাম।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">2</span> Alone: He likes to walk alone in the evening.</span><span class="bn-text">সে সন্ধ্যায় একাকী হাঁটতে পছন্দ করে।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">3</span> Already: I have already finished my breakfast.</span><span class="bn-text">আমি ইতোমধ্যেই আমার নাস্তা শেষ করেছি।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">4</span> Colleague: Mr. Rahim is my favorite colleague.</span><span class="bn-text">জনাব রহিম আমার প্রিয় সহকর্মী।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">5</span> Elderly: We should respect elderly people.</span><span class="bn-text">আমাদের বৃদ্ধ মানুষদের সম্মান করা উচিত।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">6</span> Establish: They want to establish a school here.</span><span class="bn-text">তারা এখানে একটি স্কুল স্থাপন করতে চায়।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">7</span> Fairy tale: My grandmother tells me a fairy tale.</span><span class="bn-text">আমার দাদি আমাকে একটি রূপকথার গল্প বলেন।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">8</span> Fond of: I am very fond of sweets.</span><span class="bn-text">আমি মিষ্টি খুব পছন্দ করি।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">9</span> Friendly: Our new teacher is very friendly.</span><span class="bn-text">আমাদের নতুন শিক্ষক খুব বন্ধুসুলভ।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">10</span> Ghost: The child is afraid of ghosts.</span><span class="bn-text">শিশুটি ভূতকে ভয় পায়।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">11</span> Helpless: The flood left many people helpless.</span><span class="bn-text">বন্যা অনেক মানুষকে অসহায় করে দিয়েছে।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">12</span> Locality: There is a big park in our locality.</span><span class="bn-text">আমাদের এলাকায় একটি বড় পার্ক আছে।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">13</span> Lonely: He felt lonely in the big city.</span><span class="bn-text">বড় শহরে সে নিঃসঙ্গ বোধ করছিল।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">14</span> Look after: Who will look after the garden?</span><span class="bn-text">কে বাগানটির দেখাশোনা করবে?</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">15</span> Meaningful: Try to do something meaningful in life.</span><span class="bn-text">জীবনে অর্থপূর্ণ কিছু করার চেষ্টা করো।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">16</span> Miserable: The poor man lives a miserable life.</span><span class="bn-text">গরিব লোকটি খুব শোচনীয় জীবন যাপন করছে।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">17</span> Often: I often go to the library.</span><span class="bn-text">আমি প্রায়ই লাইব্রেরিতে যাই।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">18</span> Retired: My father is a retired government officer.</span><span class="bn-text">আমার বাবা একজন অবসরপ্রাপ্ত সরকারি কর্মকর্তা।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">19</span> Spend: How do you spend your free time?</span><span class="bn-text">তুমি তোমার অবসর সময় কীভাবে ব্যয় করো?</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">20</span> Support: Thank you for your kind support.</span><span class="bn-text">আপনার দয়াশীল সাহায্যের জন্য ধন্যবাদ।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">21</span> Take care: Please take care of your health.</span><span class="bn-text">দয়া করে তোমার স্বাস্থ্যের যত্ন নিও।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">22</span> Whenever: Call me whenever you need help.</span><span class="bn-text">যখনই সাহায্যের প্রয়োজন হবে আমাকে ফোন দিও।</span></div>
+            <div class="sentence-item"><span class="eng-text"><span class="num-badge">23</span> Widow: The poor widow works in a factory.</span><span class="bn-text">অসহায় বিধবা মহিলাটি একটি কারখানায় কাজ করেন।</span></div>
+        </div>
+    </div>
+</div>
+
+<footer style="text-align: center; color: #64748b; padding-bottom: 30px; font-size: 0.9rem;">
+    &copy; 2026 Educational Resource | Mastering Lesson 15 Vocabulary
+</footer>
+
+</body>
+</html>

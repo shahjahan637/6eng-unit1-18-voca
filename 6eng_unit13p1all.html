@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary Dashboard | Lesson 13</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e293b;
+            --secondary: #2563eb;
+            --accent: #0ea5e9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 10px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2);
+        }
+
+        header h1 { margin: 0; font-size: 2.2rem; font-weight: 700; }
+        header p { margin: 10px 0 0; opacity: 0.9; font-weight: 300; }
+
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            border-left: 5px solid var(--accent);
+            padding-left: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* Table Design */
+        .table-wrapper { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:hover { background-color: #f8fafc; }
+
+        .pos-badge {
+            font-size: 0.75rem;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .synonym { color: var(--success); font-weight: 500; }
+        .antonym { color: var(--danger); font-weight: 500; }
+
+        /* Sentence List */
+        .sentence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 15px;
+        }
+
+        .sentence-card {
+            background: #fdfdfd;
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 12px;
+            border-left: 5px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .sentence-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+
+        .eng-sent {
+            display: block;
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .bn-sent {
+            display: block;
+            color: #64748b;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .index-circle {
+            display: inline-flex;
+            width: 25px;
+            height: 25px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sentence-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Lesson 13 (Part 1)</h1>
+        <p>Comprehensive Word Analysis & Sentence Translation</p>
+    </header>
+
+    <div class="card">
+        <h2>১. শব্দ বিশ্লেষণ (Word Analysis)</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Word (মূল শব্দ)</th>
+                        <th>P.O.S (রূপান্তর)</th>
+                        <th>Meaning (বাংলা অর্থ)</th>
+                        <th>Synonyms</th>
+                        <th>Antonyms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Accompany</strong></td><td><span class="pos-badge">Verb</span></td><td>সঙ্গে যাওয়া</td><td class="synonym">escort, take</td><td class="antonym">leave</td></tr>
+                    <tr><td><strong>Across</strong></td><td><span class="pos-badge">Preposition</span></td><td>ব্যাপী/জুড়ে</td><td class="synonym">over, throughout</td><td class="antonym">—</td></tr>
+                    <tr><td><strong>Assault</strong></td><td><span class="pos-badge">Verb/Noun</span></td><td>শারীরিক নির্যাতন</td><td class="synonym">abuse, attack</td><td class="antonym">defend, protect</td></tr>
+                    <tr><td><strong>Battle</strong></td><td><span class="pos-badge">Noun/Verb</span></td><td>যুদ্ধ</td><td class="synonym">fight, war</td><td class="antonym">peace</td></tr>
+                    <tr><td><strong>Cemetery</strong></td><td><span class="pos-badge">Noun</span></td><td>কবরস্থান</td><td class="synonym">graveyard</td><td class="antonym">—</td></tr>
+                    <tr><td><strong>Civilian</strong></td><td><span class="pos-badge">Noun/Adj</span></td><td>বেসামরিক ব্যক্তি</td><td class="synonym">citizen</td><td class="antonym">military</td></tr>
+                    <tr><td><strong>Commemorate</strong></td><td><span class="pos-badge">Verb</span></td><td>স্মরণ করা</td><td class="synonym">honor, remember</td><td class="antonym">forget</td></tr>
+                    <tr><td><strong>Dawn</strong></td><td><span class="pos-badge">Noun</span></td><td>ভোর</td><td class="synonym">sunrise</td><td class="antonym">sunset, dusk</td></tr>
+                    <tr><td><strong>Dedicated</strong></td><td><span class="pos-badge">Adj</span></td><td>উৎসর্গীকৃত</td><td class="synonym">devoted, committed</td><td class="antonym">—</td></tr>
+                    <tr><td><strong>Encourage</strong></td><td><span class="pos-badge">Verb</span></td><td>উৎসাহিত করা</td><td class="synonym">inspire, motivate</td><td class="antonym">discourage</td></tr>
+                    <tr><td><strong>Enthusiasm</strong></td><td><span class="pos-badge">Noun</span></td><td>প্রবল উৎসাহ</td><td class="synonym">zeal, fervor</td><td class="antonym">apathy</td></tr>
+                    <tr><td><strong>Entire</strong></td><td><span class="pos-badge">Adj</span></td><td>সমগ্র/পুরো</td><td class="synonym">whole, total</td><td class="antonym">partial</td></tr>
+                    <tr><td><strong>Familiar</strong></td><td><span class="pos-badge">Adj</span></td><td>পরিচিত</td><td class="synonym">known, common</td><td class="antonym">unknown</td></tr>
+                    <tr><td><strong>Homage</strong></td><td><span class="pos-badge">Noun</span></td><td>শ্রদ্ধা</td><td class="synonym">tribute, respect</td><td class="antonym">dishonour</td></tr>
+                    <tr><td><strong>Independence</strong></td><td><span class="pos-badge">Noun</span></td><td>স্বাধীনতা</td><td class="synonym">freedom</td><td class="antonym">dependence</td></tr>
+                    <tr><td><strong>Inspiration</strong></td><td><span class="pos-badge">Noun</span></td><td>অনুপ্রেরণা</td><td class="synonym">motivation</td><td class="antonym">discouragement</td></tr>
+                    <tr><td><strong>Liberation</strong></td><td><span class="pos-badge">Noun</span></td><td>মুক্তি/স্বাধীনতা</td><td class="synonym">independence</td><td class="antonym">subjugation</td></tr>
+                    <tr><td><strong>Martyr</strong></td><td><span class="pos-badge">Noun</span></td><td>শহীদ</td><td class="synonym">sacrificer</td><td class="antonym">—</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>২. বাক্য ও অনুবাদ (Sentences & Translation)</h2>
+        <div class="sentence-grid">
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১</span> Accompany: Will you accompany me to the park?</span><span class="bn-sent">(তুমি কি আমার সাথে পার্কে যাবে?)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">২</span> Across: They ran across the field.</span><span class="bn-sent">(তারা মাঠের এপাশ থেকে ওপাশ পর্যন্ত দৌড়াল।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">৩</span> Assault: We must stop any kind of assault on people.</span><span class="bn-sent">(মানুষের ওপর যেকোনো ধরনের নির্যাতন আমাদের অবশ্যই বন্ধ করতে হবে।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">৪</span> Battle: The soldiers fought a brave battle.</span><span class="bn-sent">(সৈন্যরা একটি সাহসী যুদ্ধ লড়েছিল।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">৫</span> Cemetery: People lay flowers at the cemetery.</span><span class="bn-sent">(মানুষ কবরস্থানে ফুল দেয়।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">৬</span> Civilian: Many civilians suffered during the war.</span><span class="bn-sent">(যুদ্ধের সময় অনেক বেসামরিক মানুষ কষ্ট পেয়েছিল।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">৭</span> Commemorate: We commemorate our heroes every year.</span><span class="bn-sent">(আমরা প্রতি বছর আমাদের বীরদের স্মরণ করি।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">৮</span> Dawn: The birds start singing at dawn.</span><span class="bn-sent">(ভোরবেলা পাখিরা গান গাইতে শুরু করে।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">৯</span> Dedicated: He is a dedicated social worker.</span><span class="bn-sent">(তিনি একজন উৎসর্গীকৃত সমাজকর্মী।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১০</span> Encourage: Teachers encourage us to study hard.</span><span class="bn-sent">(শিক্ষকরা আমাদের কঠোর পড়াশোনা করতে উৎসাহিত করেন।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১১</span> Enthusiasm: She showed great enthusiasm for the game.</span><span class="bn-sent">(সে খেলাটির প্রতি প্রবল উৎসাহ দেখিয়েছিল।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১২</span> Entire: I have read the entire book.</span><span class="bn-sent">(আমি পুরো বইটি পড়েছি।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১৩</span> Familiar: His face looks very familiar.</span><span class="bn-sent">(তার মুখটি খুব পরিচিত মনে হচ্ছে।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১৪</span> Homage: We pay homage to the martyrs.</span><span class="bn-sent">(আমরা শহীদদের প্রতি শ্রদ্ধা নিবেদন করি।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১৫</span> Independence: 1971 is the year of our independence.</span><span class="bn-sent">(১৯৭১ সাল আমাদের স্বাধীনতার বছর।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১৬</span> Inspiration: My mother is my biggest inspiration.</span><span class="bn-sent">(আমার মা আমার সবচেয়ে বড় অনুপ্রেরণা।)</span></div>
+            <div class="sentence-card"><span class="eng-sent"><span class="index-circle">১৭</span> Liberation: The Liberation War of Bangladesh took nine months.</span><span class="bn-sent">(বাংলাদেশের স্বাধীনতা যুদ্ধ নয় মাস স্থায়ী হয়েছিল।)</span></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

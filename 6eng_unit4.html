@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Vocabulary Quiz Lesson 4 - Proking</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #00f2ff;
+            --bg: #050a15;
+            --card: rgba(15, 23, 42, 0.8);
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #050a15 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Vocabulary Display Section */
+        .vocab-panel {
+            background: var(--card);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .vocab-panel h2 {
+            color: var(--accent);
+            text-align: center;
+            margin-top: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .sentence-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .sentence-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .sentence-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            font-size: 14.5px;
+            line-height: 1.5;
+            transition: 0.3s;
+        }
+
+        .sentence-box:hover { background: rgba(59, 130, 246, 0.1); }
+        .bold-word { color: var(--accent); font-weight: bold; }
+
+        /* Quiz Box Styling */
+        #quiz-container {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 25px;
+            padding: 40px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+        }
+
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: #94a3b8; font-weight: bold; }
+        .progress-bar { height: 10px; background: #1e293b; border-radius: 5px; margin-bottom: 30px; overflow: hidden; }
+        #progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: 0.5s; }
+
+        .question-text { font-size: 22px; margin-bottom: 30px; line-height: 1.4; color: #fff; }
+        .options-list { display: grid; gap: 15px; }
+
+        .opt-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            border-radius: 15px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .opt-btn:hover:not([disabled]) { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); transform: translateY(-2px); }
+        .correct { background: #10b981 !important; border-color: #10b981; }
+        .wrong { background: #ef4444 !important; border-color: #ef4444; }
+
+        #result-screen { text-align: center; display: none; padding: 40px 0; }
+        .final-score { font-size: 60px; font-weight: 800; color: var(--accent); margin: 20px 0; }
+        .btn-reset { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .btn-reset:hover { background: var(--secondary); box-shadow: 0 0 20px var(--secondary); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="vocab-panel">
+    <h2>Lesson 4 Vocabulary Sentences</h2>
+    <div class="sentence-grid" id="sentence-container"></div>
+</div>
+
+<div id="quiz-container">
+    <div id="quiz-main">
+        <div class="quiz-header">
+            <span id="q-count">Question: 1/12</span>
+            <span id="live-score">Score: 0</span>
+        </div>
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        
+        <div id="q-area">
+            <div class="question-text" id="q-text">Loading question...</div>
+            <div class="options-list" id="opt-list"></div>
+        </div>
+    </div>
+
+    <div id="result-screen">
+        <h1 id="greet-msg">Congratulations!</h1>
+        <p>You finished the Lesson 4 Vocabulary Quiz</p>
+        <div class="final-score" id="score-text">0</div>
+        <p id="performance-feedback" style="margin-bottom: 30px; color: #94a3b8;"></p>
+        <button class="btn-reset" onclick="location.reload()">Try Again</button>
+    </div>
+</div>
+
+<script>
+    const lessonData = [
+        "A lot of: I have a lot of storybooks. (আমার অনেক গল্পের বই আছে।)",
+        "Already: He has already finished the work. (সে ইতিমধ্যে কাজটি শেষ করেছে।)",
+        "Among: Divide the sweets among the children. (মিষ্টিগুলো শিশুদের মধ্যে ভাগ করে দাও।)",
+        "Architect: He wants to be a famous architect. (সে একজন বিখ্যাত স্থপতি হতে চায়।)",
+        "Belong: Does this pen belong to you? (এই কলমটি কি তোমার?)",
+        "Conversation: We had a short conversation about the match. (খেলাটি নিয়ে আমাদের ছোট একটি কথোপকথন হয়েছিল।)",
+        "Design: She can design beautiful dresses. (সে সুন্দর পোশাকের নকশা করতে পারে।)",
+        "Difference: What is the difference between these two books? (এই দুটি বইয়ের মধ্যে পার্থক্য কী?)",
+        "Fair: We visited the book fair last week. (গত সপ্তাহে আমরা বইমেলায় গিয়েছিলাম।)",
+        "Hungry: I am very hungry now. (আমি এখন খুব ক্ষুধার্ত।)",
+        "Imagine: Can you imagine a flying car? (তুমি কি একটি উড়ন্ত গাড়ির কথা কল্পনা করতে পারো?)",
+        "Immigration: They are waiting at the immigration desk. (তারা অভিবাসন ডেস্কে অপেক্ষা করছে।)",
+        "Instead: I will drink tea instead of coffee. (আমি কফির পরিবর্তে চা পান করব।)",
+        "Introduce: Let me introduce my friend to you. (আমার বন্ধুর সাথে তোমাকে পরিচয় করিয়ে দিই।)",
+        "Living room: We are sitting in the living room. (আমরা বসার ঘরে বসে আছি।)",
+        "Moment: Please wait for a moment. (দয়া করে এক মুহূর্ত অপেক্ষা করুন।)",
+        "Mostly: The students are mostly from this village. (ছাত্ররা প্রধানত এই গ্রামেরই।)",
+        "Natural: Bangladesh is full of natural beauty. (বাংলাদেশ প্রাকৃতিক সৌন্দর্যে ভরপুর।)",
+        "Neighbour: He is our new neighbour. (সে আমাদের নতুন প্রতিবেশী।)",
+        "Noise: Don't make a noise in the class. (ক্লাসে গোলমাল করো না।)",
+        "Obviously: She is obviously very talented. (সে স্পষ্টতই খুব মেধাবী।)",
+        "Outskirt: They live on the outskirt of the city. (তারা শহরের উপকণ্ঠে বাস করে।)",
+        "Part-time: He works as a part-time teacher. (সে খণ্ডকালীন শিক্ষক হিসেবে কাজ করে।)",
+        "Practise: You should practise English every day. (তোমার প্রতিদিন ইংরেজি অনুশীলন করা উচিত।)",
+        "Profession: Teaching is a noble profession. (শিক্ষকতা একটি মহান পেশা।)",
+        "Properly: Please write your name properly. (দয়া করে তোমার নাম সঠিকভাবে লেখো।)",
+        "Refer: Please refer to page ten for more details. (আরও তথ্যের জন্য দশ নম্বর পৃষ্ঠাটি দেখুন।)",
+        "Scream: Don't scream like that. (ওভাবে চিৎকার করো না।)",
+        "Situation: The situation is now under control. (পরিস্থিতি এখন নিয়ন্ত্রণে আছে।)",
+        "Sometimes: Sometimes I go to the park for a walk. (মাঝে মাঝে আমি পার্কে হাঁটতে যাই।)",
+        "Transfer: My father got a transfer to Dhaka. (আমার বাবার ঢাকায় বদলি হয়েছে।)",
+        "Watch: I like to watch cricket on TV. (আমি টিভিতে ক্রিকেট দেখতে পছন্দ করি।)"
+    ];
+
+    const quizQuestions = [
+        { q: "What is the synonym of 'Difference'?", a: "Dissimilarity", o: ["Similarity", "Likeness", "Dissimilarity", "Agreement"] },
+        { q: "'Architect' এর বাংলা অর্থ কী?", a: "স্থপতি", o: ["ইঞ্জিনিয়ার", "স্থপতি", "ঠিকাদার", "চিত্রকর"] },
+        { q: "What is the Antonym of 'Hungry'?", a: "Satisfied", o: ["Starving", "Famished", "Satisfied", "Greedy"] },
+        { q: "Fill in the blank: 'I will drink tea ____ of coffee.'", a: "instead", o: ["instead", "mostly", "among", "obviously"] },
+        { q: "Which Parts of Speech is 'Properly'?", a: "Adverb", o: ["Noun", "Adjective", "Adverb", "Verb"] },
+        { q: "Synonym of 'Imagine' is:", a: "Presume", o: ["Ignore", "Neglect", "Presume", "Verify"] },
+        { q: "Antonym of 'Natural' is:", a: "Artificial", o: ["Usual", "Normal", "Regular", "Artificial"] },
+        { q: "Where do you usually sit with guests?", a: "Living room", o: ["Outskirt", "Immigration", "Living room", "Fair"] },
+        { q: "'Scream' শব্দটির সমার্থক শব্দ কোনটি?", a: "Shout", o: ["Whisper", "Mumble", "Shout", "Talk"] },
+        { q: "Complete the sentence: 'Teaching is a noble ____.'", a: "profession", o: ["situation", "profession", "moment", "design"] },
+        { q: "What is the Antonym of 'Part-time'?", a: "Permanent", o: ["Temporary", "Permanent", "Half-time", "Daily"] },
+        { q: "Which word means 'শহরতলী'?", a: "Outskirt", o: ["Center", "Outskirt", "Downtown", "Market"] }
+    ];
+
+    // Build sentence grid
+    const sContainer = document.getElementById('sentence-container');
+    lessonData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'sentence-box';
+        const [word, text] = item.split(':');
+        div.innerHTML = `<span class="bold-word">${word}:</span>${text}`;
+        sContainer.appendChild(div);
+    });
+
+    let qIdx = 0;
+    let currentScore = 0;
+
+    function renderQuestion() {
+        const qData = quizQuestions[qIdx];
+        document.getElementById('q-text').innerText = qData.q;
+        document.getElementById('q-count').innerText = `Question: ${qIdx + 1}/${quizQuestions.length}`;
+        document.getElementById('progress-fill').style.width = `${((qIdx + 1) / quizQuestions.length) * 100}%`;
+        
+        const list = document.getElementById('opt-list');
+        list.innerHTML = '';
+        qData.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(opt, btn);
+            list.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(choice, btn) {
+        const correct = quizQuestions[qIdx].a;
+        const btns = document.querySelectorAll('.opt-btn');
+        btns.forEach(b => b.disabled = true);
+
+        if (choice === correct) {
+            currentScore += 10;
+            btn.classList.add('correct');
+        } else {
+            currentScore -= 2;
+            btn.classList.add('wrong');
+            btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+        document.getElementById('live-score').innerText = `Score: ${currentScore}`;
+
+        setTimeout(() => {
+            qIdx++;
+            if (qIdx < quizQuestions.length) renderQuestion();
+            else showResult();
+        }, 1200);
+    }
+
+    function showResult() {
+        document.getElementById('quiz-main').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('score-text').innerText = currentScore;
+        
+        let feedback = "";
+        if (currentScore >= 100) feedback = "Mind-blowing! You're an English Pro! 🚀";
+        else if (currentScore >= 70) feedback = "Excellent work! Keep it up. 🌟";
+        else feedback = "Good effort, but you need more practice. 📚";
+        
+        document.getElementById('performance-feedback').innerText = feedback;
+    }
+
+    renderQuestion();
+</script>
+</body>
+</html>

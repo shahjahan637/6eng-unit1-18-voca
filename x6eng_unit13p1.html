@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 13 - Vocabulary Master Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e293b;
+            --secondary: #3b82f6;
+            --accent: #0ea5e9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg: #f1f5f9;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        header h1 { margin: 0; font-size: 2rem; font-weight: 700; }
+        header p { margin: 10px 0 0; opacity: 0.8; font-weight: 300; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 1024px) {
+            .grid { grid-template-columns: 3fr 2fr; }
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        /* Table Style */
+        .table-container { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 12px;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .pos { font-size: 0.8rem; color: #64748b; font-style: italic; }
+        .syn { color: var(--success); font-weight: 500; }
+        .ant { color: var(--danger); font-weight: 500; }
+
+        /* Sentence List Style */
+        .sentence-item {
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8fafc;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--secondary);
+            transition: all 0.3s;
+        }
+
+        .sentence-item:hover {
+            background: #f1f7ff;
+            transform: translateX(5px);
+        }
+
+        .eng-txt {
+            display: block;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 5px;
+        }
+
+        .bn-txt {
+            display: block;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Lesson 13 (Part 1)</h1>
+        <p>Advanced Vocabulary & Sentence Structures with Bengali Meaning</p>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <h2>১. শব্দ বিশ্লেষণ (Word Analysis Table)</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Word (P.O.S)</th>
+                            <th>Meaning</th>
+                            <th>Synonyms</th>
+                            <th>Antonyms</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Accompany</strong><br><span class="pos">Verb</span></td>
+                            <td>সঙ্গে যাওয়া</td>
+                            <td class="syn">escort, take</td>
+                            <td class="ant">leave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Assault</strong><br><span class="pos">Verb/Noun</span></td>
+                            <td>শারীরিক নির্যাতন</td>
+                            <td class="syn">abuse, attack</td>
+                            <td class="ant">defend</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Commemorate</strong><br><span class="pos">Verb</span></td>
+                            <td>স্মরণ করা</td>
+                            <td class="syn">honor, remember</td>
+                            <td class="ant">forget</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dawn</strong><br><span class="pos">Noun</span></td>
+                            <td>ভোর</td>
+                            <td class="syn">sunrise</td>
+                            <td class="ant">sunset</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Enthusiasm</strong><br><span class="pos">Noun</span></td>
+                            <td>প্রবল উৎসাহ</td>
+                            <td class="syn">zeal, fervor</td>
+                            <td class="ant">apathy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Independence</strong><br><span class="pos">Noun</span></td>
+                            <td>স্বাধীনতা</td>
+                            <td class="syn">freedom</td>
+                            <td class="ant">dependence</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Liberation</strong><br><span class="pos">Noun</span></td>
+                            <td>মুক্তি/স্বাধীনতা</td>
+                            <td class="syn">independence</td>
+                            <td class="ant">subjugation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: 15px;">* সারণীতে গুরুত্বপূর্ণ শব্দগুলো দেখানো হয়েছে। সব শব্দ নিচের উদাহরণে বিস্তারিত আছে।</p>
+        </div>
+
+        <div class="card">
+            <h2>২. বাক্য এবং অনুবাদ (Examples)</h2>
+            
+            <div class="sentence-item">
+                <span class="badge">Accompany</span>
+                <span class="eng-txt">Will you accompany me to the park?</span>
+                <span class="bn-txt">(তুমি কি আমার সাথে পার্কে যাবে?)</span>
+            </div>
+
+            <div class="sentence-item">
+                <span class="badge">Across</span>
+                <span class="eng-txt">They ran across the field.</span>
+                <span class="bn-txt">(তারা মাঠের এপাশ থেকে ওপাশ পর্যন্ত দৌড়াল।)</span>
+            </div>
+
+            <div class="sentence-item">
+                <span class="badge">Cemetery</span>
+                <span class="eng-txt">People lay flowers at the cemetery.</span>
+                <span class="bn-txt">(মানুষ কবরস্থানে ফুল দেয়।)</span>
+            </div>
+
+            <div class="sentence-item">
+                <span class="badge">Commemorate</span>
+                <span class="eng-txt">We commemorate our heroes every year.</span>
+                <span class="bn-txt">(আমরা প্রতি বছর আমাদের বীরদের স্মরণ করি।)</span>
+            </div>
+
+            <div class="sentence-item">
+                <span class="badge">Dedicated</span>
+                <span class="eng-txt">He is a dedicated social worker.</span>
+                <span class="bn-txt">(তিনি একজন উৎসর্গীকৃত সমাজকর্মী।)</span>
+            </div>
+
+            <div class="sentence-item">
+                <span class="badge">Homage</span>
+                <span class="eng-txt">We pay homage to the martyrs.</span>
+                <span class="bn-txt">(আমরা শহীদদের প্রতি শ্রদ্ধা নিবেদন করি।)</span>
+            </div>
+
+            <div class="sentence-item">
+                <span class="badge">Inspiration</span>
+                <span class="eng-txt">My mother is my biggest inspiration.</span>
+                <span class="bn-txt">(আমার মা আমার সবচেয়ে বড় অনুপ্রেরণা।)</span>
+            </div>
+
+            <div class="sentence-item">
+                <span class="badge">Liberation</span>
+                <span class="eng-txt">The Liberation War took nine months.</span>
+                <span class="bn-txt">(বাংলাদেশের স্বাধীনতা যুদ্ধ নয় মাস স্থায়ী হয়েছিল।)</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 9 Vocabulary Quiz - Proking</title>
+    <style>
+        :root {
+            --primary: #2dd4bf; /* Teal */
+            --secondary: #0d9488;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --text: #f8fafc;
+            --accent: #f43f5e; /* Rose */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(45, 212, 191, 0.1) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.05) 0, transparent 50%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Study Dashboard */
+        .study-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .study-panel h2 {
+            text-align: center;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0;
+        }
+
+        .sentence-scroll {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .sentence-scroll { grid-template-columns: 1fr 1fr; }
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            font-size: 14.5px;
+            transition: 0.3s;
+        }
+
+        .item:hover { background: rgba(45, 212, 191, 0.1); }
+        .keyword { color: var(--accent); font-weight: bold; }
+
+        /* Quiz Box */
+        #quiz-container {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 35px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .q-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; color: #94a3b8; }
+        .progress-bar { height: 8px; background: #1e293b; border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
+        #progress-inner { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: 0.5s; }
+
+        .question-txt { font-size: 21px; margin-bottom: 25px; line-height: 1.4; color: #fff; min-height: 60px; }
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
+
+        .btn-opt {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 14px;
+            color: #cbd5e1;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .btn-opt:hover:not([disabled]) {
+            background: rgba(45, 212, 191, 0.15);
+            border-color: var(--primary);
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        .correct { background: #059669 !important; border-color: #34d399 !important; color: white; }
+        .wrong { background: #e11d48 !important; border-color: #fb7185 !important; color: white; }
+
+        #result-screen { text-align: center; display: none; padding: 40px 0; }
+        .final-pts { font-size: 60px; font-weight: 900; color: var(--primary); margin: 20px 0; }
+        .btn-retry { background: var(--primary); color: #0f172a; border: none; padding: 15px 40px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 17px; transition: 0.3s; }
+        .btn-retry:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="study-panel">
+    <h2>Lesson 9: Vocabulary Explorer</h2>
+    <div class="sentence-scroll" id="sentence-list"></div>
+</div>
+
+<div id="quiz-container">
+    <div id="quiz-active">
+        <div class="q-header">
+            <span id="q-counter">Q: 1/15</span>
+            <span id="score-live">Score: 0</span>
+        </div>
+        <div class="progress-bar"><div id="progress-inner"></div></div>
+        
+        <div id="content">
+            <div class="question-txt" id="q-text">Loading question...</div>
+            <div class="options-grid" id="opt-container"></div>
+        </div>
+    </div>
+
+    <div id="result-screen">
+        <h1 style="color: var(--primary)">Challenge Completed!</h1>
+        <p>Your Lesson 9 Vocabulary performance is:</p>
+        <div class="final-pts" id="score-text">0</div>
+        <p id="feedback" style="margin-bottom: 30px; font-style: italic; color: #94a3b8;"></p>
+        <button class="btn-retry" onclick="location.reload()">Restart Quiz</button>
+    </div>
+</div>
+
+<script>
+    const lessonData = [
+        "Active: He is an active member of our club. (সে আমাদের ক্লাবের একজন কর্মঠ সদস্য।)",
+        "Balanced: We should eat a balanced diet. (আমাদের সুষম খাবার খাওয়া উচিত।)",
+        "Bathe: I bathe in the river every day. (আমি প্রতিদিন নদীতে গোসল করি।)",
+        "Careful: Be careful about your health. (তোমার স্বাস্থ্যের ব্যাপারে সচেতন থেকো।)",
+        "Cheerful: She has a cheerful mind. (তার মন খুব প্রফুল্ল।)",
+        "Cleanliness: Cleanliness is next to godliness. (পরিচ্ছন্নতা ঈমানের অঙ্গ।)",
+        "Contain: This box contains many old books. (এই বাক্সটিতে অনেক পুরনো বই আছে।)",
+        "Disease: Prevention is better than disease. (রোগের চেয়ে প্রতিকার ভালো।)",
+        "Environment: We must keep our environment clean. (আমাদের অবশ্যই পরিবেশ পরিষ্কার রাখতে হবে।)",
+        "Essential: Water is essential for life. (জীবনের জন্য পানি অত্যাবশ্যকীয়।)",
+        "Exercise: Walking is a good exercise. (হাঁটা একটি ভালো ব্যায়াম।)",
+        "Fit: He runs every morning to keep fit. (সুস্থ থাকতে সে প্রতিদিন সকালে দৌড়ায়।)",
+        "Fitness: Physical fitness is important for everyone. (শারীরিক সুস্থতা সবার জন্য গুরুত্বপূর্ণ।)",
+        "Household: She does all the household chores. (সে ঘরের সব কাজ করে।)",
+        "Hygiene: Personal hygiene is a good habit. (ব্যক্তিগত স্বাস্থ্যবিধি একটি ভালো অভ্যাস।)",
+        "Medicare: The government provides free medicare. (সরকার বিনামূল্যে স্বাস্থ্যসেবা প্রদান করে।)",
+        "Nutrition: Fruits provide a lot of nutrition. (ফল প্রচুর পুষ্টি যোগায়।)",
+        "Organ: The heart is a vital organ of our body. (হৃৎপিণ্ড আমাদের শরীরের একটি গুরুত্বপূর্ণ অঙ্গ।)",
+        "Physical: We should take part in physical activities. (আমাদের শারীরিক কর্মকাণ্ডে অংশ নেওয়া উচিত।)",
+        "Pretty: The story is pretty long. (গল্পটি বেশ লম্বা।)",
+        "Proper: You must take proper medicine. (তোমাকে অবশ্যই সঠিক ওষুধ সেবন করতে হবে।)",
+        "Proportion: Mix the salt in the right proportion. (সঠিক অনুপাতে লবণ মেশাও।)",
+        "Proverb: 'Health is Wealth' is a famous proverb. ('স্বাস্থ্যই সম্পদ' একটি বিখ্যাত প্রবাদ।)",
+        "Pure: Always drink pure water. (সবসময় বিশুদ্ধ পানি পান করবে।)",
+        "Quite: I am quite happy with the result. (আমি ফলাফলে পুরোপুরি খুশি।)",
+        "Regularly: You should brush your teeth regularly. (তোমার নিয়মিত দাঁত মাজা উচিত।)",
+        "Rest: You need to take some rest now. (তোমার এখন কিছুটা বিশ্রাম নেওয়া প্রয়োজন।)"
+    ];
+
+    const quizPool = [
+        { q: "What is the synonym of 'Essential'?", a: "Crucial", o: ["Trivial", "Crucial", "Needleless", "Extra"] },
+        { q: "'Cleanliness' এর বিপরীত শব্দ (Antonym) কোনটি?", a: "Dirtiness", o: ["Purity", "Sanitation", "Neatness", "Dirtiness"] },
+        { q: "Fill in: 'Cleanliness is next to ____.'", a: "godliness", o: ["happiness", "fitness", "godliness", "hygiene"] },
+        { q: "Which word means 'সুষম'?", a: "Balanced", o: ["Active", "Balanced", "Proper", "Pure"] },
+        { q: "Synonym of 'Cheerful' is:", a: "Jolly", o: ["Gloomy", "Jolly", "Depressed", "Sad"] },
+        { q: "What is the Noun form of 'Active'?", a: "Activity", o: ["Actively", "Action", "Activity", "Activated"] },
+        { q: "Antonym of 'Fit' is:", a: "Unfit", o: ["Strong", "Sound", "Healthy", "Unfit"] },
+        { q: "Which organ is vital for our body according to Lesson 9?", a: "Heart", o: ["Liver", "Brain", "Heart", "Hand"] },
+        { q: "What is the meaning of 'Nutrition'?", a: "পুষ্টি", o: ["ব্যায়াম", "বিশ্রাম", "পুষ্টি", "পরিবেশ"] },
+        { q: "Synonym of 'Proverb' is:", a: "Maxim", o: ["Novel", "Maxim", "Poem", "Drama"] },
+        { q: "Antonym of 'Pure' is:", a: "Impure", o: ["Natural", "Refined", "Clean", "Impure"] },
+        { q: "Which word is an Adverb meaning 'পুরোপুরিভাবে'?", a: "Quite", o: ["Pretty", "Quite", "Proper", "Regular"] },
+        { q: "Fill in: 'Mix the salt in the right ____.'", a: "proportion", o: ["quantity", "proportion", "amount", "ratio"] },
+        { q: "What is the synonym of 'Rest'?", a: "Relaxation", o: ["Work", "Activity", "Relaxation", "Labor"] },
+        { q: "Complete the proverb: 'Health is ____.'", a: "Wealth", o: ["Happiness", "Life", "Wealth", "Gold"] }
+    ];
+
+    // Populating study list
+    const list = document.getElementById('sentence-list');
+    lessonData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        const parts = item.split(':');
+        div.innerHTML = `<span class="keyword">${parts[0]}:</span>${parts[1]}`;
+        list.appendChild(div);
+    });
+
+    let qIdx = 0;
+    let score = 0;
+
+    function renderQ() {
+        const data = quizPool[qIdx];
+        document.getElementById('q-text').innerText = data.q;
+        document.getElementById('q-counter').innerText = `Q: ${qIdx + 1}/${quizPool.length}`;
+        document.getElementById('progress-inner').style.width = `${((qIdx + 1) / quizPool.length) * 100}%`;
+        
+        const container = document.getElementById('opt-container');
+        container.innerHTML = '';
+        data.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-opt';
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(opt, btn);
+            container.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(sel, btn) {
+        const correct = quizPool[qIdx].a;
+        const all = document.querySelectorAll('.btn-opt');
+        all.forEach(b => b.disabled = true);
+
+        if (sel === correct) {
+            score += 10;
+            btn.classList.add('correct');
+        } else {
+            score -= 2;
+            btn.classList.add('wrong');
+            all.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+        document.getElementById('score-live').innerText = `Score: ${score}`;
+
+        setTimeout(() => {
+            qIdx++;
+            if (qIdx < quizPool.length) renderQ();
+            else showResult();
+        }, 1100);
+    }
+
+    function showResult() {
+        document.getElementById('quiz-active').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('score-text').innerText = score;
+        
+        let msg = "";
+        if(score >= 130) msg = "Sensational! You are a Health & Vocab Pro, Proking! 👑";
+        else if(score >= 90) msg = "Great job! You have a solid grasp on Lesson 9. 🌟";
+        else msg = "Keep practicing! Review the sentences above and try again. 📚";
+        
+        document.getElementById('feedback').innerText = msg;
+    }
+
+    renderQ();
+</script>
+</body>
+</html>
