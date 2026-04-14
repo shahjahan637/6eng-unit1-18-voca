@@ -3,183 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium 3D Geometry Book Creator & Lab</title>
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
-
+    <title>Geometry Pro Max Quiz</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --neon-blue: #00f2ff;
-            --neon-purple: #bc13fe;
-            --bg-dark: #0a0f1d;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary: #8b5cf6;
+            --secondary: #ec4899;
+            --bg: #0f172a;
+            --card: rgba(30, 41, 59, 0.7);
         }
-
         body {
-            background: linear-gradient(135deg, #050b14 0%, #111827 100%);
-            color: #ffffff;
-            font-family: 'SolaimanLipi', 'Poppins', sans-serif;
-            overflow-y: auto;
+            font-family: 'Hind Siliguri', sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            color: white;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            overflow-x: hidden;
         }
-
-        .glass-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            padding: 25px;
-            margin-bottom: 25px;
-            transition: transform 0.3s ease;
+        .quiz-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            position: relative;
         }
-
-        #docs-content-area {
-            min-height: 350px;
-            background: #ffffff;
-            color: #1a1a1a;
-            font-family: 'SolaimanLipi', sans-serif !important; 
+        .header { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.9rem; color: #94a3b8; }
+        .progress-container { height: 8px; background: #334155; border-radius: 10px; margin-bottom: 2rem; overflow: hidden; }
+        #progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        h2 { font-size: 1.4rem; margin-bottom: 1.5rem; line-height: 1.6; }
+        .options-grid { display: grid; gap: 12px; }
+        .opt-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px 20px;
             border-radius: 12px;
-            padding: 25px;
-            overflow-x: auto;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
-            line-height: 1.6;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
         }
-
-        #docs-content-area h2, #docs-content-area h3, #docs-content-area p, #docs-content-area div { 
-            font-family: 'SolaimanLipi', sans-serif !important; 
+        .opt-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        .correct { background: #10b981 !important; border-color: #059669; box-shadow: 0 0 15px rgba(16,185,129,0.4); }
+        .wrong { background: #ef4444 !important; border-color: #dc2626; box-shadow: 0 0 15px rgba(239,68,68,0.4); }
+        #timer-circle { color: #fbbf24; font-weight: bold; font-family: monospace; font-size: 1.2rem; }
+        .btn-next {
+            margin-top: 1.5rem;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
         }
-        
-        #docs-content-area h2, #docs-content-area h3 { color: #0056b3; margin-top: 20px;}
-        #docs-content-area img, #docs-content-area video { max-width: 100%; height: auto; border-radius: 8px; margin: 15px 0; }
-
-        /* MCQ Styles */
-        .mcq-card { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 20px; padding: 15px; background: #fdfdfd; box-shadow: 0 4px 6px rgba(0,0,0,0.02); font-family: 'SolaimanLipi', sans-serif !important; }
-        .mcq-question { font-weight: 600; color: #2c3e50; font-size: 1.1rem; margin-bottom: 15px; }
-        .mcq-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; font-size: 1rem; color: #34495e; }
-        details > summary { list-style: none; color: #e74c3c; font-weight: 600; cursor: pointer; display: inline-block; padding: 5px 10px; background: #fbecec; border-radius: 5px; transition: 0.3s;}
-        details > summary:hover { background: #fadbd8; }
-        details > summary::-webkit-details-marker { display: none; }
-        .mcq-answer { margin-top: 10px; padding: 15px; background: #e8f8f5; border-left: 4px solid #1abc9c; border-radius: 4px; font-size: 0.95rem; color: #16a085; }
-
-        #canvas-container {
-            width: 100%; height: 400px; border-radius: 16px; background: #000;
-            position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(0, 242, 255, 0.15);
-        }
-
-        .custom-slider { width: 100%; accent-color: var(--neon-blue); }
-        
-        .nav-btn {
-            width: 100%; text-align: left; margin-bottom: 8px; border-radius: 10px;
-            background: rgba(255,255,255,0.05); color: white; padding: 10px 12px; 
-            border: 1px solid transparent; font-size: 0.85rem; transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .nav-btn.active { background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple)); color: #000; font-weight: 600; border-color: white; box-shadow: 0 0 15px rgba(0,242,255,0.4); }
-
-        .coord-overlay { position: absolute; background: rgba(255,0,60,0.9); color: white; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-family: monospace; pointer-events: none; z-index: 10; box-shadow: 0 0 10px rgba(255,0,60,0.5); }
-        
-        .form-control-dark { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; border-radius: 8px; }
+        .result-screen { text-align: center; display: none; }
+        .rank-badge { font-size: 1.2rem; color: #fbbf24; margin-top: 1rem; display: block; }
     </style>
 </head>
 <body>
 
-<div class="container py-4">
-    <div class="text-center mb-5">
-        <h1 style="color: var(--neon-blue); font-weight: 700; font-family: 'Poppins', sans-serif; text-shadow: 0 0 15px rgba(0,242,255,0.4);">Interactive 3D Geometry Explorer</h1>
-        <p class="text-light opacity-75">Mensuration Visualization, Real-time Analysis & Automated Book Publishing</p>
+<div class="quiz-card" id="game-container">
+    <div id="quiz-view">
+        <div class="header">
+            <span>প্রশ্ন: <span id="current-idx">1</span>/20</span>
+            <span id="timer-circle">15</span>
+        </div>
+        <div class="progress-container"><div id="progress-bar"></div></div>
+        <h2 id="question-text">লোড হচ্ছে...</h2>
+        <div class="options-grid" id="options-container"></div>
+        <button class="btn-next" id="next-btn" onclick="nextQuestion()">পরবর্তী প্রশ্ন ➔</button>
     </div>
 
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="glass-card text-center">
-                <div id="canvas-container">
-                    <div id="laser-tag" class="coord-overlay" style="display:none;"></div>
-                </div>
-                <div class="mt-4 p-3 rounded" style="background: rgba(0,242,255,0.05); border: 1px solid rgba(0,242,255,0.2);">
-                    <div id="formula-display" class="h5 mb-0" style="color: var(--neon-blue); font-family: 'Poppins', sans-serif;"></div>
-                </div>
-                
-                <div class="row mt-4 text-start bg-dark p-3 rounded mx-1" style="border: 1px solid var(--glass-border);">
-                    <div class="col-6">
-                        <label class="small text-info fw-bold">Rotate X-Axis (h): <span id="h-val" class="text-white">0</span></label>
-                        <input type="range" class="custom-slider mt-2" id="sliderH" min="-180" max="180" step="1" value="0" oninput="updateFromSlider()">
-                    </div>
-                    <div class="col-6">
-                        <label class="small text-info fw-bold">Rotate Y-Axis (k): <span id="k-val" class="text-white">0</span></label>
-                        <input type="range" class="custom-slider mt-2" id="sliderK" min="-180" max="180" step="1" value="0" oninput="updateFromSlider()">
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card">
-                <h5 class="text-info mb-3" style="font-family: 'SolaimanLipi', sans-serif;">📖 Book Details (বইয়ের তথ্য)</h5>
-                <input type="text" id="bookTitle" class="form-control form-control-dark mb-2" placeholder="Book Title (e.g., Advanced 3D Geometry)">
-                <input type="text" id="authorName" class="form-control form-control-dark mb-3" value="Shahjahan Ali, Mathematics-Dhaka University" placeholder="Author Name">
-                
-                <div class="d-flex gap-2 flex-wrap">
-                    <button class="btn btn-danger flex-grow-1 fw-bold" onclick="exportPDF()">📕 Publish PDF Book</button>
-                    <button class="btn btn-primary flex-grow-1 fw-bold" onclick="exportWord()">📘 Export as Word</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="glass-card">
-                <h5 class="mb-3 text-white border-bottom border-secondary pb-2">🎯 Select 3D/2D Object</h5>
-                <div class="row g-2">
-                    <div class="col-6 col-md-3"><button class="nav-btn active" onclick="setMode('sphere', this)">🌍 Sphere</button></div>
-                    <div class="col-6 col-md-3"><button class="nav-btn" onclick="setMode('pyramid', this)">⛺ Pyramid</button></div>
-                    <div class="col-6 col-md-3"><button class="nav-btn" onclick="setMode('prism', this)">💎 Prism</button></div>
-                    <div class="col-6 col-md-3"><button class="nav-btn" onclick="setMode('cuboid', this)">🧱 Cuboid</button></div>
-                    <div class="col-6 col-md-3"><button class="nav-btn" onclick="setMode('cube', this)">🧊 Cube</button></div>
-                    <div class="col-6 col-md-3"><button class="nav-btn" onclick="setMode('cylinder', this)">🛢️ Cylinder</button></div>
-                    <div class="col-6 col-md-3"><button class="nav-btn" onclick="setMode('cone', this)">🍦 Cone</button></div>
-                    <div class="col-6 col-md-3"><button class="nav-btn" onclick="setMode('parallelogram', this)">▱ Parallelogram</button></div>
-                </div>
-            </div>
-
-            <div class="glass-card">
-                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom border-secondary pb-2">
-                    <h5 class="text-info m-0">📄 Chapter Content</h5>
-                    <div>
-                        <button class="btn btn-sm btn-outline-info fw-bold" onclick="addSmartMedia()">🔗 Add Media/Link</button>
-                    </div>
-                </div>
-                
-                <div id="docs-content-area" contenteditable="true">
-                    </div>
-            </div>
-        </div>
+    <div class="result-screen" id="result-view">
+        <h1 style="font-size: 3rem;">🎉</h1>
+        <h2>কুইজ সম্পন্ন!</h2>
+        <p style="font-size: 1.2rem;">আপনার স্কোর: <span id="score-val" style="color:var(--secondary); font-weight:bold;">0</span> / 20</p>
+        <span class="rank-badge" id="rank-text"></span>
+        <button class="btn-next" style="display:block; margin-top:2rem;" onclick="location.reload()">আবার শুরু করুন</button>
     </div>
 </div>
 
 <script>
-    var mode = 'sphere'; 
-    var p = { h: 0, k: 0 }; 
-    var animSpeed = 0; 
+const questions = [
+    { q: "যেকোনো চতুর্ভুজের বাহুগুলোর মধ্যবিন্দু সংযোগ করলে কোন চিত্রটি গঠিত হয়?", o: ["আয়ত", "বর্গ", "সামান্তরিক", "রম্বস"], c: 2 },
+    { q: "আয়তের বাহুগুলোর মধ্যবিন্দু পর্যায়ক্রমে যোগ করলে কী পাওয়া যায়?", o: ["সামান্তরিক", "ট্রাপিজিয়াম", "বর্গ", "রম্বস"], c: 0 },
+    { q: "বর্গের বাহুগুলোর মধ্যবিন্দুর সংযোগে নিচের কোনটি গঠিত হয়?", o: ["আয়ত", "বর্গ", "রম্বস", "সামান্তরিক"], c: 1 },
+    { q: "রম্বস ও ট্রাপিজিয়ামের বাহুগুলোর মধ্যবিন্দু সংযোগে নিচের কোনটি গঠিত হয়?", o: ["সামান্তরিক", "আয়ত", "বর্গ", "কোনোটিই নয়"], c: 0 },
+    { q: "একটি অনন্য ত্রিভুজ অঙ্কন করতে কমপক্ষে কয়টি নিরপেক্ষ উপাত্তের প্রয়োজন?", o: ["২টি", "৩টি", "৪টি", "৫টি"], c: 1 },
+    { q: "ত্রিভুজ অঙ্কন সম্ভব নয় যদি বাহুদ্বয়ের সমষ্টি—", o: ["তৃতীয় বাহু অপেক্ষা বড় হয়", "তৃতীয় বাহু অপেক্ষা ছোট হয়", "সমান হয়", "উভয় (খ) ও (গ)"], c: 3 },
+    { q: "ত্রিভুজের যেকোনো দুই বাহুর অন্তরফল অবশ্যই তৃতীয় বাহু অপেক্ষা—", o: ["বৃহত্তর হবে", "সমান হবে", "ক্ষুদ্রতর হবে", "দ্বিগুণ হবে"], c: 2 },
+    { q: "একটি নির্দিষ্ট চতুর্ভুজ অঙ্কন করতে কয়টি স্বতন্ত্র উপাত্তের প্রয়োজন?", o: ["৩টি", "৪টি", "৫টি", "৬টি"], c: 2 },
+    { q: "নিচের কোন ক্ষেত্রে চতুর্ভুজ অঙ্কন সম্ভব নয়?", o: ["৪টি বাহু ও ১টি কোণ", "৩টি বাহু ও ২টি কোণ", "২টি বাহু ও ৩টি সূক্ষ্মকোণ", "৫টি বাহু"], c: 2 },
+    { q: "একটি আয়ত অঙ্কন করতে কয়টি উপাত্ত জানা প্রয়োজন?", o: ["১টি", "২টি", "৩টি", "৪টি"], c: 1 },
+    { q: "শুধুমাত্র পরিসীমা দেওয়া থাকলে কোনটি অঙ্কন সম্ভব?", o: ["রম্বস", "আয়ত", "সামান্তরিক", "বর্গ"], c: 3 },
+    { q: "রম্বস অঙ্কন করতে নিচের কোনটি ব্যবহার করা যায়?", o: ["বাহু ও কোণ", "দুইটি কর্ণ", "বাহু ও কর্ণ", "সবগুলো"], c: 3 },
+    { q: "একটি সামান্তরিক অঙ্কন করতে কয়টি উপাত্ত প্রয়োজন?", o: ["২টি", "৩টি", "৪টি", "৫টি"], c: 1 },
+    { q: "ট্রাপিজিয়াম অঙ্কনের জন্য কয়টি উপাত্ত প্রয়োজন?", o: ["৩টি", "৪টি", "৫টি", "২টি"], c: 1 },
+    { q: "সামান্তরিকের বিপরীত বাহুগুলো পরস্পর—", o: ["সমান", "সমান্তরাল", "সমান ও সমান্তরাল", "অসমান"], c: 2 },
+    { q: "সামান্তরিকের বিপরীত কোণগুলো পরস্পর কেমন?", o: ["সম্পূরক", "সমান", "পূরক", "অর্ধেক"], c: 1 },
+    { q: "সামান্তরিকের কর্ণদ্বয় পরস্পরকে কী করে?", o: ["সমকোণে ছেদ", "সমদ্বিখণ্ডিত", "অসমান ভাগে ভাগ", "কোনটিই নয়"], c: 1 },
+    { q: "সামান্তরিকের পাশাপাশি কোণগুলো পরস্পর—", o: ["পূরক", "সম্পূরক", "সমান", "একান্তর"], c: 1 },
+    { q: "বর্গ ও আয়তের কর্ণ দুটি পরস্পর—", o: ["অসমান", "সমান", "সমান্তরাল", "লম্ব"], c: 1 },
+    { q: "বর্গ ও রম্বসের কর্ণদ্বয় পরস্পরকে কীভাবে ছেদ করে?", o: ["সমকোণে সমদ্বিখণ্ডিত", "সূক্ষ্মকোণে", "শুধু স্পর্শ", "অসমানভাবে"], c: 0 }
+];
+
+let qIndex = 0, score = 0, timer, timeLimit = 15;
+const correctSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+const wrongSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3');
+
+function init() {
+    showQuestion();
+}
+
+function showQuestion() {
+    const q = questions[qIndex];
+    document.getElementById('question-text').innerText = q.q;
+    document.getElementById('current-idx').innerText = qIndex + 1;
+    document.getElementById('progress-bar').style.width = `${((qIndex+1)/20)*100}%`;
     
-    function generateMCQ(qNo, question, optA, optB, optC, optD, correctAns, explanation) {
-        return `
-        <div class="mcq-card">
-            <div class="mcq-question">${qNo}. ${question}</div>
-            <div class="mcq-options">
-                <div>ক) ${optA}</div> <div>খ) ${optB}</div>
-                <div>গ) ${optC}</div> <div>ঘ) ${optD}</div>
-            </div>
-            <details>
-                <summary>👁️ উত্তর ও ব্যাখ্যা দেখুন</summary>
-                <div class="mcq-answer">
-                    <b>সঠিক উত্তর:</b> ${correctAns}<br><br>
-                    <b>বিশ্লেষণ:</b> ${explanation}
-                </div>
-            </details>
-        </div>`;
+    const container = document.getElementById('options-container');
+    container.innerHTML = '';
+    q.o.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(i);
+        container.appendChild(btn);
+    });
+    
+    document.getElementById('next-btn').style.display = 'none';
+    startTimer();
+}
+
+function startTimer() {
+    let timeLeft = timeLimit;
+    document.getElementById('timer-circle').innerText = timeLeft;
+    clearInterval(timer);
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer-circle').innerText = timeLeft;
+        if(timeLeft <= 0) {
+            clearInterval(timer);
+            checkAnswer(-1);
+        }
+    }, 1000);
+}
+
+function checkAnswer(selected) {
+    clearInterval(timer);
+    const correct = questions[qIndex].c;
+    const btns = document.querySelectorAll('.opt-btn');
+    
+    if(selected === correct) {
+        btns[selected].classList.add('correct');
+        score++;
+        correctSound.play();
+    } else {
+        if(selected !== -1) btns[selected].classList.add('wrong');
+        btns[correct].classList.add('correct');
+        wrongSound.play();
+    }
+    
+    btns.forEach(b => b.style.pointerEvents = 'none');
+    document.getElementById('next-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+    qIndex++;
+    if(qIndex < questions.length) {
+        showQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    document.getElementById('quiz-view').style.display = 'none';
+    document.getElementById('result-view').style.display = 'block';
+    document.getElementById('score-val').innerText = score;
+    
+    let rank = "";
+    if(score === 20) { rank = "🏆 জ্যামিতি সম্রাট!"; confetti(); }
+    else if(score > 15) { rank = "🌟 জ্যামিতি প্রো!"; confetti(); }
+    else if(score > 10) rank = "👍 ভালো চেষ্টা!";
+    else rank = "📚 আরও পড়ুন!";
+    
+    document.getElementById('rank-text').innerText = rank;
+}
+
+init();
+</script>
+</body>
+</html>
